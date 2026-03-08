@@ -1,0 +1,2 @@
+# No external dependencies needed for the hello‑world demo,
+# but Jules may add packages here when it evolves the example.
