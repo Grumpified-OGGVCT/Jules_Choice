@@ -12,3 +12,4 @@ All notable changes Jules makes to this repository will be documented here.
 - `docs/roadmap.md` – living roadmap
 - `logs/` – policy‑check and ethics log stubs
 - `agents/`, `tools/`, `tests/` – placeholder structure
+- `config/personas/` – Sovereign Agentic OS persona pack with shared universal mandates
