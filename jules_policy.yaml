@@ -1,0 +1,7 @@
+# Safety rules – do NOT edit unless you understand the consequences
+no_illegal_content: true
+no_nsfw_content: true
+no_nefarious_content: true
+no_climate_tools: true
+no_political_tools: true
+no_story_writing_tools: true

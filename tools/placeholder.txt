@@ -1,0 +1,2 @@
+This folder is reserved for experimental utilities.
+Jules will add scripts, notebooks, or binaries here as it explores new ideas.

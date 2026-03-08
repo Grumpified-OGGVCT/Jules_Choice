@@ -1,0 +1,4 @@
+# Basic runtime settings for Jules (feel free to extend)
+poll_interval_seconds: 3600          # how often Jules wakes up
+max_commit_batch_size: 10            # max files changed per commit
+log_level: INFO
