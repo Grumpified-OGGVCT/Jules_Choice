@@ -1,3 +1,5 @@
+🌐 **Live Preview (App Gallery):** [https://Grumpified-OGGVCT.github.io/Jules_Choice/](https://Grumpified-OGGVCT.github.io/Jules_Choice/)
+
 ![CI](https://github.com/Grumpified-OGGVCT/Jules_Choice/actions/workflows/ci.yml/badge.svg)
 <p align="center">
   <img src="docs/assets/banner.svg" alt="Jules Sandbox — An Open-Ended Autonomous AI Playground" width="100%">

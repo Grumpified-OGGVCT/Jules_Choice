@@ -17,3 +17,5 @@ jobs:
         run: pytest --cov=. --cov-report=term-missing
       - name: Security Scan
         run: bandit -r . -ll
+      - name: Build App Gallery
+        run: python tools/build_app_gallery.py

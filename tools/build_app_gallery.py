@@ -7,7 +7,6 @@ import subprocess
 import ast
 import tempfile
 import venv
-import shutil
 
 APP_ROOT = os.environ.get('APP_ROOT', 'examples')
 DOCS_DIR = 'docs'
