@@ -1,0 +1,37 @@
+vision:
+  statement: "Build increasingly sophisticated, useful, and self-improving autonomous software"
+  north_star_metrics:
+    - functional_code_files_count
+    - test_pass_rate
+    - tool_count
+    - sprint_velocity
+    - self_improvement_score
+    - creative_output_count
+
+goals:
+  current_sprint:
+    - id: G-001
+      description: "Create at least one real, useful Python tool"
+      priority: P0
+      success_criteria: "Tool exists, has tests, runs without errors"
+    - id: G-002
+      description: "Establish CI/CD pipeline"
+      priority: P0
+    - id: G-003
+      description: "Build first real agent class"
+      priority: P1
+    - id: G-004
+      description: "Generate at least one data visualization per sprint"
+      priority: P1
+
+instincts:
+  - NEVER_REDUCE: "Never delete functionality without replacing it with something better"
+  - ALWAYS_TEST: "Every new code file must have at least one test"
+  - ALWAYS_LOG: "Log every significant decision to logs/"
+  - REAL_OVER_PLACEHOLDER: "Replace placeholders with real implementations"
+  - ITERATE_UP: "Each sprint must be more sophisticated than the last"
+
+intentions:
+  creative_direction: "autonomous"
+  pivot_allowed: true
+  pivot_constraint: "Must archive old work, never delete without replacement"
