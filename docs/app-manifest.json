@@ -1,0 +1,12 @@
+{
+    "apps": [
+        {
+            "name": "hello_world",
+            "description": "A tiny, self\u2011contained example that Jules created on its first run.\n\nRunning this script prints a friendly greeting.  Jules may replace or extend\nthis example with something more ambitious later.",
+            "version": null,
+            "screenshot_url": "https://via.placeholder.com/300x200?text=No+Image",
+            "zip_url": "app_zips/hello_world.zip",
+            "last_updated": "2026-03-08 15:06:54 -0500"
+        }
+    ]
+}

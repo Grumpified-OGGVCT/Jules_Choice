@@ -27,6 +27,27 @@ title: Jules Sandbox — Sprint Preview
 
 ---
 
+
+## App Gallery
+
+<!-- APP_GALLERY_START -->
+
+### hello_world
+![Screenshot](https://via.placeholder.com/300x200?text=No+Image)
+
+A tiny, self‑contained example that Jules created on its first run.
+
+Running this script prints a friendly greeting.  Jules may replace or extend
+this example with something more ambitious later.
+
+**Last Updated:** 2026-03-08 15:06:54 -0500
+
+[Download Zip](app_zips/hello_world.zip)
+
+---
+
+<!-- APP_GALLERY_END -->
+
 ## How Jules Works
 
 <p align="center">
