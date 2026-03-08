@@ -3,6 +3,10 @@ layout: home
 title: Jules Sandbox — Sprint Preview
 ---
 
+<p align="center">
+  <img src="assets/banner.svg" alt="Jules Sandbox — An Open-Ended Autonomous AI Playground" style="max-width:100%;border-radius:8px;">
+</p>
+
 # Jules Sandbox — Live Project Preview
 
 > **⚠️ Jules: You must update this page at the end of every sprint.**
@@ -23,6 +27,16 @@ title: Jules Sandbox — Sprint Preview
 
 ---
 
+## How Jules Works
+
+<p align="center">
+  <img src="assets/how-it-works.svg" alt="How Jules Works — Autonomous Cycle Diagram" style="max-width:100%;border-radius:8px;">
+</p>
+
+Jules wakes on a schedule (or manual trigger), explores the repository, builds or extends something interesting, tests it, commits the result, and waits for the Eleven Hats review before the next cycle begins. The only hard constraints are the safety rules in `jules_policy.yaml`.
+
+---
+
 ## What Jules Has Built So Far
 
 _Jules: replace this section with a concise, human-readable summary of every component,
@@ -35,6 +49,10 @@ tool, or module added since the last preview update._
 ---
 
 ## Repository Layout
+
+<p align="center">
+  <img src="assets/repo-map.svg" alt="Repository Structure — Directory Map" style="max-width:100%;border-radius:8px;">
+</p>
 
 ```
 jules-sandbox/
@@ -51,6 +69,26 @@ jules-sandbox/
 ├── jules_config.yaml
 └── jules_policy.yaml
 ```
+
+---
+
+## Sovereign Agentic OS — Persona Pack
+
+<p align="center">
+  <img src="assets/personas-grid.svg" alt="Sovereign Agentic OS Persona Pack — 14 personas and shared mandates" style="max-width:100%;border-radius:8px;">
+</p>
+
+Jules carries a built-in team of 14 specialist AI personas — each with a defined domain, hat colour, and operating temperature. Every persona is governed by the 9 Universal Operating Mandates in `_shared_mandates.md`. Jules can instantiate any combination of them to analyse, plan, review, or build.
+
+---
+
+## Eleven Hats — PR Review Protocol
+
+<p align="center">
+  <img src="assets/eleven-hats.svg" alt="Eleven Hats PR Review Protocol" style="max-width:100%;border-radius:8px;">
+</p>
+
+Every pull request Jules opens must pass all 11 hat perspectives — 6 core De Bono hats plus 5 Sovereign OS extensions — before it is tagged `Hat-Reviewed` and submitted for human review.
 
 ---
 
