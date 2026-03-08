@@ -57,6 +57,9 @@ cover/
 
 # Django stuff:
 *.log
+# Keep the Jules log stubs in version control
+!logs/policy_check.log
+!logs/ethics.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
