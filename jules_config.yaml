@@ -2,3 +2,20 @@
 poll_interval_seconds: 3600          # how often Jules wakes up
 max_commit_batch_size: 10            # max files changed per commit
 log_level: INFO
+
+# GitHub Pages — static project-preview site
+# The /docs folder is published via GitHub Pages (enabled by the repo owner).
+# Jules MUST update docs/index.md AND README.md at the end of every sprint so
+# both the public Pages site and the GitHub repo homepage always show a
+# complete, accurate preview of the current project state.
+# The Pages site is static; it only changes when Jules explicitly edits the
+# Markdown files in /docs and pushes.
+github_pages:
+  enabled: true
+  source_folder: docs          # GitHub Pages is configured to serve from /docs
+  entry_point: docs/index.md   # main sprint-review page
+  sprint_end_obligation: >
+    At the end of every sprint, update BOTH README.md AND docs/index.md with
+    the current sprint status, new components, roadmap progress, and a sprint
+    history entry.  Commit both files together with the message:
+    "docs: sprint <N> preview update"

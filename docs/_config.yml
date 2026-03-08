@@ -1,0 +1,10 @@
+title: Jules Sandbox — Project Preview
+description: >-
+  Live sprint-review display for the Jules autonomous AI playground.
+  Updated by Jules at the end of every sprint to reflect the latest project state.
+theme: minima
+markdown: kramdown
+
+# GitHub Pages serves this /docs folder as a static site.
+# Jules MUST update docs/index.md (and related pages) at the end of every sprint
+# so this site always shows a complete, accurate preview of the current project.
