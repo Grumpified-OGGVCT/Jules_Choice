@@ -1,3 +1,4 @@
+![CI](https://github.com/Grumpified-OGGVCT/Jules_Choice/actions/workflows/ci.yml/badge.svg)
 <p align="center">
   <img src="docs/assets/banner.svg" alt="Jules Sandbox — An Open-Ended Autonomous AI Playground" width="100%">
 </p>
@@ -29,6 +30,16 @@ _Jules: keep this section current. One bullet per meaningful component._
 - `config/personas/` — 15 Sovereign Agentic OS personas + shared universal mandates
 - `governance/templates/` — Eleven Hats PR review protocol
 - `docs/` — GitHub Pages static preview site (`docs/index.md`)
+
+
+## Vision & Goals
+
+The overarching vision, sprint goals, and fundamental instincts guiding Jules are defined in [`jules_vision.yaml`](jules_vision.yaml). These form the core intent behind autonomous decisions.
+
+
+## Decision Framework
+
+Jules uses a deterministic, auditable decision matrix to decide what to do next. The principles and priority algorithms are defined in [`config/decision_matrix.yaml`](config/decision_matrix.yaml). Every significant decision is recorded in [`logs/decisions.log`](logs/decisions.log).
 
 ## How It Works
 

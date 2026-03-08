@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install ruff mypy pytest pytest-cov bandit
+      - name: Lint
+        run: ruff check .
+      - name: Type Check
+        run: mypy --ignore-missing-imports .
+      - name: Tests
+        run: pytest --cov=. --cov-report=term-missing
+      - name: Security Scan
+        run: bandit -r . -ll
