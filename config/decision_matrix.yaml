@@ -1,17 +1,4 @@
 # When Jules needs to choose what to do next, it evaluates options
-# against this matrix. Every decision is logged and auditable.
-
-decision_principles:
-  - maximize_utility: "Build things a human would find useful"
-  - maximize_novelty: "Don't rebuild what exists — create new things"
-  - minimize_risk: "Prefer safe, tested changes over risky experiments"
-  - maintain_momentum: "Always ship something — no empty sprints"
-
-priority_algorithm:
-  1. Check jules_vision.yaml goals — any P0 not yet complete?
-  2. Run tools/self_eval.py — what's the weakest dimension?
-  3. Check open issues — any assigned to Jules?
-  4. Free exploration — ideate and build something new
 # against this matrix. Every decision is logged and auditable in ALIGN.
 
 decision_principles:

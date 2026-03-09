@@ -119,11 +119,17 @@ def update_index_md(apps):
         for app in apps:
             img = app['screenshot_url']
             if not img.startswith('http'):
-                # Assuming screenshot is placed in the docs directory or referenced relatively.
-                # Since the instructions don't specify where the actual image file is copied,
-                # we'll use a relative path assuming it's in the repo structure.
-                # For a true static site, it should be copied to docs/assets/, but we'll link to the source for now or assume it's copied.
-                pass # Keeping original string, might need adjustment based on site setup.
+                # Copy the screenshot to docs/assets
+                src_path = os.path.join(APP_ROOT, app['name'], img)
+                dest_dir = os.path.join(DOCS_DIR, 'assets')
+                os.makedirs(dest_dir, exist_ok=True)
+                dest_path = os.path.join(dest_dir, f"{app['name']}_{img}")
+                try:
+                    import shutil
+                    shutil.copy2(src_path, dest_path)
+                    img = f"assets/{app['name']}_{img}"
+                except Exception as e:
+                    print(f"Warning: Could not copy screenshot for {app['name']}: {e}")
 
             gallery_md += f"### {app['name']}\n"
             gallery_md += f"![Screenshot]({img})\n\n"
