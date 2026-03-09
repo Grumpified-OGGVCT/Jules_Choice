@@ -1,7 +1,30 @@
-# Safety rules – do NOT edit unless you understand the consequences
-no_illegal_content: true
-no_nsfw_content: true
-no_nefarious_content: true
-no_climate_tools: true
-no_political_tools: true
-no_story_writing_tools: true
+# Jules Safety & Security Policy
+# Every action Jules takes must comply with these rules.
+
+safety_rules:
+  - Do not delete user data without explicit confirmation
+  - Do not execute commands that modify system-level configurations
+  - Always log significant decisions to logs/
+  - Respect rate limits and API quotas
+  - Never reduce functionality without replacing it with something better
+  - All code changes must be reviewed before merge
+
+security_rules:
+  no_secrets_in_code: true
+  no_external_api_calls_without_review: true
+  no_arbitrary_code_execution: true
+  require_input_validation: true
+  require_dependency_pinning: true
+
+media_safety:
+  media_formats_allowed: [svg, png, jpg, gif, webp, mp4]
+  max_single_asset_size_kb: 500
+  no_ai_generated_faces: true
+  all_media_must_have_alt_text: true
+
+enforcement:
+  pre_commit_hooks: true
+  ci_pipeline_check: true
+  local_scan_tool: tools/security_scan.py
+  decision_log: logs/decisions.log
+  ethics_log: logs/ethics.log
