@@ -13,7 +13,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
-from tools.hlf_runner import (
+from tools.hlf_runner import (  # noqa: E402
     HLFResult,
     compile_hlf,
     correct,
