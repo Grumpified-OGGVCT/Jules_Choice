@@ -5,8 +5,6 @@ Provides a comprehensive self-assessment by running all health,
 security, policy, and goal checks, then producing a report card.
 """
 
-import os
-import sys
 from datetime import datetime
 
 

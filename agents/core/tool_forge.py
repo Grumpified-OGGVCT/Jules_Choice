@@ -94,7 +94,7 @@ def _validate_ast(code: str) -> bool:
                         return False
 
             if isinstance(node, ast.Call):
-                # Check for os.system() or alias.system()
+                # Check for os.system() or alias.system( )
                 func = node.func
                 if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name):
                     if func.value.id == aliases["os"] and func.attr in ("system", "popen", "spawn"):

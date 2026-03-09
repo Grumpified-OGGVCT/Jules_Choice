@@ -5,16 +5,15 @@ Tests the hlf_runner.py tool against real HLF source code,
 verifying compile, lint, validate, generate, format, and correct operations.
 """
 
-import sys
 from pathlib import Path
 
 import pytest
 
 # Ensure project root is in path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
 
-from tools.hlf_runner import (
+
+from tools.hlf_runner import (  # noqa: E402
     HLFResult,
     compile_hlf,
     correct,

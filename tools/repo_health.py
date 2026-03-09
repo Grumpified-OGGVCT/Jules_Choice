@@ -41,13 +41,20 @@ class HealthMetrics:
     @property
     def health_score(self) -> float:
         score = 0
-        if self.has_ci: score += 5
-        if self.has_readme: score += 5
-        if self.has_contributing: score += 3
-        if self.has_changelog: score += 3
-        if self.has_security: score += 4
-        if self.has_vision: score += 5
-        if self.has_policy: score += 5
+        if self.has_ci:
+            score += 5
+        if self.has_readme:
+            score += 5
+        if self.has_contributing:
+            score += 3
+        if self.has_changelog:
+            score += 3
+        if self.has_security:
+            score += 4
+        if self.has_vision:
+            score += 5
+        if self.has_policy:
+            score += 5
         if self.python_files > 0:
             real_ratio = self.real_code_files / self.python_files
             score += int(real_ratio * 20)

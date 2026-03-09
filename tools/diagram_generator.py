@@ -5,7 +5,6 @@ Generates architecture and flow diagrams as SVG files.
 """
 
 import os
-from datetime import datetime
 
 
 def generate_architecture_diagram(output_path: str = "docs/assets/generated/architecture.svg") -> str:
