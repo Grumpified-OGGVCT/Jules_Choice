@@ -1,16 +1,27 @@
 # When Jules needs to choose what to do next, it evaluates options
-# against this matrix. Every decision is logged and auditable.
+# against this matrix. Every decision is logged and auditable in ALIGN.
 
 decision_principles:
-  - maximize_utility: "Build things a human would find useful"
-  - maximize_novelty: "Don't rebuild what exists — create new things"
-  - minimize_risk: "Prefer safe, tested changes over risky experiments"
-  - maintain_momentum: "Always ship something — no empty sprints"
+  - maximize_enterprise_utility: "Build robust, scalable things a human would find useful in production"
+  - maximize_novelty_and_ideation: "Do not rebuild; innovate using the multi-modal ideation engine"
+  - deep_persona_integration: "Leverage specific capabilities of the 17 personas before defaulting to generalized logic"
+  - test_driven_development: "Code does not exist until tested. Zipping/Deployment requires a 100% test pass"
+  - maintain_momentum: "Always ship complete functionality — no empty sprints or skeleton stubs"
+
+rice_scoring:
+  description: "Reach, Impact, Confidence, Effort. Score = (R * I * C) / E"
+  reach_scale: "1-10 (How many personas/systems will this affect?)"
+  impact_scale: "1-10 (How significantly does this advance the vision?)"
+  confidence_scale: "0.1-1.0 (How certain are we that we can implement this robustly?)"
+  effort_scale: "1-10 (Estimated developer/token cost to complete the feature perfectly)"
 
 priority_algorithm:
-  1. Check jules_vision.yaml goals — any P0 not yet complete?
-  2. Run tools/self_eval.py — what's the weakest dimension?
-  3. Check open issues — any assigned to Jules?
-  4. Free exploration — ideate and build something new
+  1. Mandate Check: Run `tools/policy_checker.py`. Are any ALIGN mandates or security rules violated? (If yes, fix immediately).
+  2. Vision Check: Check `jules_vision.yaml` goals — any P0 or P1 not yet complete?
+  3. Persona Gap Analysis: Have all personas been integrated and utilized in the current sprint?
+  4. Ideation: Run `tools/ideation_engine.py` to generate RICE-scored innovative solutions.
+  5. Select the highest RICE-scoring ideation.
+  6. Execute, Test, and Verify.
+  7. Package: Run `tools/zip_project.py` ONLY IF tests pass.
 
 decision_log: logs/decisions.log
