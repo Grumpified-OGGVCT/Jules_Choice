@@ -1,0 +1,56 @@
+# Jules Self-Improvement Configuration
+# Defines how Jules evaluates and improves itself each sprint.
+
+self_evaluation:
+  frequency: "end_of_sprint"
+  metrics:
+    - name: "health_score_delta"
+      description: "Change in repo health score since last sprint"
+      target: "+5 per sprint"
+      tool: "tools/repo_health.py --json"
+
+    - name: "test_count_delta"
+      description: "Number of new tests added"
+      target: "+10 per sprint"
+      tool: "pytest --co -q | wc -l"
+
+    - name: "tool_count"
+      description: "Number of functional tools"
+      target: "8 tools by end of sprint 2"
+      tool: "ls tools/*.py | wc -l"
+
+    - name: "placeholder_ratio"
+      description: "Ratio of placeholder to real code files"
+      target: "< 0.1"
+      tool: "tools/repo_health.py --json"
+
+    - name: "goal_completion"
+      description: "Sprint goal completion percentage"
+      target: "> 75%"
+      tool: "tools/goal_tracker.py"
+
+    - name: "issues_closed"
+      description: "Number of issues closed in sprint"
+      target: "> 3 per sprint"
+
+improvement_actions:
+  - trigger: "health_score < 50"
+    action: "Focus on infrastructure gaps (CI, docs, security)"
+    priority: "P0"
+
+  - trigger: "placeholder_ratio > 0.2"
+    action: "Replace placeholders with real implementations"
+    priority: "P0"
+
+  - trigger: "test_count_delta < 5"
+    action: "Write tests for uncovered tools and agents"
+    priority: "P1"
+
+  - trigger: "goal_completion < 50%"
+    action: "Re-prioritize sprint goals, focus on achievable items"
+    priority: "P1"
+
+logging:
+  output: "logs/self_improvement.log"
+  format: "timestamp | metric | previous | current | delta | action_taken"
+  retention_days: 90
