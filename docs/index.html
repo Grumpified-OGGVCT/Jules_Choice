@@ -62,6 +62,9 @@
       overflow-x: hidden;
     }
 
+
+    /* Canvas particles */
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
     /* ── Animated backgrounds ── */
     .bg-grid {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -380,6 +383,60 @@
     footer a { color: var(--violet-bright); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
+
+    /* ── Terminal simulator ── */
+    .terminal { background: #0c0a1a; border: 1px solid var(--border-glass); border-radius: var(--radius); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+    .terminal-header { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1.2rem; background: rgba(124,58,237,0.06); border-bottom: 1px solid var(--border-glass); }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem; }
+    .terminal-body { padding: 1.25rem 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8; min-height: 320px; color: var(--text-secondary); }
+    .term-prompt { color: var(--emerald); }
+    .term-cmd { color: var(--text-primary); font-weight: 600; }
+    .term-out { color: var(--text-muted); }
+    .term-ok { color: var(--emerald); }
+    .term-info { color: var(--violet-bright); }
+    .term-cursor { display: inline-block; width: 8px; height: 16px; background: var(--violet-bright); animation: blink-cursor 0.8s step-end infinite; vertical-align: text-bottom; }
+    @keyframes blink-cursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── Tabbed code viewer ── */
+    .code-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border-glass); background: rgba(124,58,237,0.04); overflow-x: auto; }
+    .code-tab { padding: 0.7rem 1.2rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+    .code-tab:hover { color: var(--text-secondary); }
+    .code-tab.active { color: var(--violet-bright); border-bottom-color: var(--violet-bright); background: rgba(167,139,250,0.06); }
+    .code-pane { display: none; padding: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.85; overflow-x: auto; color: var(--text-secondary); white-space: pre; }
+    .code-pane.active { display: block; }
+
+    /* ── VGII Framework ── */
+    .vgii-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .vgii-card { background: var(--bg-glass); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 1.5rem; text-align: center; transition: all 0.3s; }
+    .vgii-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+    .vgii-letter { font-size: 2.5rem; font-weight: 900; font-family: var(--font-mono); margin-bottom: 0.5rem; line-height: 1; }
+    .vgii-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.02em; }
+    .vgii-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+    .vgii-items { text-align: left; margin-top: 0.75rem; list-style: none; font-size: 0.72rem; color: var(--text-secondary); line-height: 1.7; }
+    .vgii-items li::before { content: '\2192  '; color: var(--violet-bright); font-weight: 700; }
+
+    /* ── Governance cards ── */
+    .gov-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .gov-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius); padding: 1.5rem; transition: all 0.3s; }
+    .gov-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+    .gov-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .gov-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; }
+    .gov-card code { font-family: var(--font-mono); font-size: 0.7rem; background: var(--violet-dim); color: var(--violet-bright); padding: 0.1rem 0.4rem; border-radius: 3px; }
+
+    /* ── Self-improvement metrics ── */
+    .improve-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .improve-metric { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 1.25rem; transition: all 0.2s; }
+    .improve-metric:hover { border-color: var(--border-hover); }
+    .improve-metric h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .improve-target { font-family: var(--font-mono); font-size: 0.72rem; color: var(--emerald); margin-bottom: 0.25rem; }
+    .improve-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .vgii-grid { grid-template-columns: repeat(2, 1fr); }
+      .gov-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── Scroll animations ── */
     .fade-in {
       opacity: 0; transform: translateY(24px);
@@ -404,6 +461,7 @@
   </style>
 </head>
 <body>
+<canvas id="particles"></canvas>
 
 <div class="bg-grid"></div>
 <div class="bg-orb bg-orb-1"></div>
@@ -416,12 +474,14 @@
     <div class="nav-brand">⟡ Jules Sandbox</div>
     <ul class="nav-links">
       <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#hlf-engine">HLF Engine</a></li>
+      <li><a href="#hlf-engine">HLF Code</a></li>
+      <li><a href="#terminal-demo">Live Demo</a></li>
+      <li><a href="#vgii">VGII</a></li>
       <li><a href="#pipeline">Pipeline</a></li>
       <li><a href="#agents">Agents</a></li>
       <li><a href="#toolchain">Toolchain</a></li>
+      <li><a href="#governance">Governance</a></li>
       <li><a href="#programs">Programs</a></li>
-      <li><a href="#releases">Releases</a></li>
     </ul>
     <a href="https://github.com/Grumpified-OGGVCT/Jules_Choice" class="nav-cta" target="_blank">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -566,11 +626,18 @@
   <div class="container">
     <div class="section-header fade-in">
       <h2>The Hieroglyphic Logic Framework</h2>
-      <p>A language that makes AI intent deterministic, auditable, and gas-metered</p>
+      <p>A language that makes AI instinct deterministic, auditable, and gas-metered</p>
     </div>
 
     <div class="hlf-block fade-in">
-      <div class="hlf-header">
+      <div class="code-tabs">
+        <button class="code-tab active" data-tab="t1">agent_dispatch.hlf</button>
+        <button class="code-tab" data-tab="t2">decision_matrix.hlf</button>
+        <button class="code-tab" data-tab="t3">security_audit.hlf</button>
+        <button class="code-tab" data-tab="t4">health_check.hlf</button>
+        <button class="code-tab" data-tab="t5">sprint_report.hlf</button>
+      </div>
+      <div id="t1" class="code-pane active"><div class="hlf-header">
         <div class="hlf-dot" style="background: var(--rose);"></div>
         <div class="hlf-dot" style="background: var(--amber);"></div>
         <div class="hlf-dot" style="background: var(--emerald);"></div>
@@ -600,7 +667,73 @@ classification <span class="sym">←</span> ${_RETURN_VALUE}
 
 <span class="tag">[MEMORY]</span> dispatch_log = <span class="str">"Task routed to ${classification} agent"</span> confidence=<span class="num">0.85</span>
 <span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"dispatch_complete"</span>
-<span class="sym">Ω</span></div>
+<span class="sym">Ω</span></div></div>
+      <div id="t2" class="code-pane"><span class="tag">[HLF-v4]</span>
+<span class="tag">[SET]</span> framework = <span class="str">"VGII"</span>
+<span class="tag">[SET]</span> confidence_threshold = <span class="num">0.75</span>
+
+<span class="tag">[INTENT]</span> <span class="str">"Execute VGII deterministic decision framework"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"deterministic"</span> <span class="str">"true"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"audit_trail"</span> <span class="str">"required"</span>
+
+<span class="tag">[THOUGHT]</span> <span class="str">"VGII = Vision, Goals, Instincts, Intentions"</span>
+
+<span class="tag">[FUNCTION]</span> evaluate_vision
+  <span class="tag">[RECALL]</span> vision_state = <span class="str">"jules_vision"</span> top_k=<span class="num">3</span>
+  <span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(goal_tracker.get_active_goals) scope=<span class="str">"vision"</span>
+  <span class="tag">[ASSERT]</span> ${vision_alignment} <span class="str">"Vision alignment check failed"</span>
+
+<span class="tag">[FUNCTION]</span> evaluate_instincts
+  <span class="tag">[SET]</span> instinct_rules = <span class="str">"non_reductive,security_first,test_coverage"</span>
+  <span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(policy_checker.check_all) rules=<span class="str">"${instinct_rules}"</span>
+  <span class="tag">[ASSERT]</span> ${instinct_compliance} <span class="str">"Instinct violation detected"</span>
+
+<span class="sym">&#x228E;</span> ${decision_confidence} &gt; ${confidence_threshold} <span class="sym">&#x21D2;</span> <span class="tag">[ACTION]</span> <span class="str">"execute"</span>
+<span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"decision_matrix_complete"</span>
+<span class="sym">&#x03A9;</span></div>
+      <div id="t3" class="code-pane"><span class="tag">[HLF-v3]</span>
+<span class="tag">[SET]</span> audit_scope = <span class="str">"full"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"gas_limit"</span> <span class="str">"100"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"least_privilege"</span> <span class="str">"true"</span>
+
+<span class="tag">[PLAN]</span> <span class="str">"layer1_static"</span> <span class="str">"layer2_deps"</span> <span class="str">"layer3_policy"</span> <span class="str">"layer4_secrets"</span>
+
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(security_scan.run_bandit) target=<span class="str">"agents/"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(security_scan.check_dependencies) manifest=<span class="str">"pyproject.toml"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(policy_checker.check_all) rules=<span class="str">"security_rules"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(security_scan.detect_secrets) scope=<span class="str">"${audit_scope}"</span>
+
+<span class="sym">&#x228E;</span> ${critical_count} &gt; <span class="num">0</span> <span class="sym">&#x21D2;</span> <span class="tag">[VOTE]</span> false <span class="str">"Critical vulns"</span> <span class="sym">&#x21CC;</span> <span class="tag">[VOTE]</span> true <span class="str">"Passed"</span>
+<span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"security_audit_complete"</span>
+<span class="sym">&#x03A9;</span></div>
+      <div id="t4" class="code-pane"><span class="tag">[HLF-v3]</span>
+<span class="tag">[SET]</span> repo_name = <span class="str">"Jules_Choice"</span>
+<span class="tag">[SET]</span> min_health_score = <span class="num">70</span>
+<span class="tag">[SET]</span> check_categories = <span class="str">"structure,security,tests,docs,ci"</span>
+
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(repo_health.check_structure) repo_name=<span class="str">"${repo_name}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(security_scan.run_scan) target=<span class="str">"${repo_name}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(repo_health.check_tests) repo_name=<span class="str">"${repo_name}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(repo_health.check_docs) repo_name=<span class="str">"${repo_name}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(repo_health.check_ci) repo_name=<span class="str">"${repo_name}"</span>
+
+<span class="sym">&#x228E;</span> ${overall_score} &gt; ${min_health_score} <span class="sym">&#x21D2;</span> <span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"PASSED"</span> <span class="sym">&#x21CC;</span> <span class="tag">[RESULT]</span> <span class="num">1</span> <span class="str">"FAILED"</span>
+<span class="sym">&#x03A9;</span></div>
+      <div id="t5" class="code-pane"><span class="tag">[HLF-v3]</span>
+<span class="tag">[SET]</span> sprint_id = <span class="str">"current"</span>
+<span class="tag">[SET]</span> report_format = <span class="str">"markdown"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"non_reductive"</span> <span class="str">"true"</span>
+
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(sprint_reporter.get_sprint_data) sprint=<span class="str">"${sprint_id}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(sprint_reporter.get_issue_stats) sprint=<span class="str">"${sprint_id}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(sprint_reporter.get_pr_stats) sprint=<span class="str">"${sprint_id}"</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(repo_health.check_structure) repo_name=<span class="str">"Jules_Choice"</span>
+<span class="tag">[RECALL]</span> previous_health = <span class="str">"last_health_score"</span> top_k=<span class="num">1</span>
+<span class="sym">&#x21A6;</span> <span class="sym">&#x03C4;</span>(chart_generator.generate_progress_chart) data=<span class="str">"${sprint_data}"</span>
+
+<span class="tag">[MEMORY]</span> sprint_complete = <span class="str">"Sprint complete"</span> confidence=<span class="num">0.95</span>
+<span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"sprint_report_generated"</span>
+<span class="sym">&#x03A9;</span></div>
     </div>
 
     <div class="arch-grid" style="margin-top: 2rem;">
@@ -628,14 +761,14 @@ classification <span class="sym">←</span> ${_RETURN_VALUE}
   <div class="container">
     <div class="section-header fade-in">
       <h2>Execution Pipeline</h2>
-      <p>From human intent to deterministic, gas-metered execution</p>
+      <p>From human instinct to deterministic, gas-metered execution</p>
     </div>
 
     <div class="pipeline fade-in">
       <div class="pipeline-steps">
         <div class="pipeline-step">
           <div class="step-num">1</div>
-          <h4>Intent</h4>
+          <h4>Instinct</h4>
           <p>Natural language or pre-compiled HLF AST arrives via Redis stream</p>
         </div>
         <div class="pipeline-step">
@@ -829,6 +962,118 @@ classification <span class="sym">←</span> ${_RETURN_VALUE}
   </div>
 </section>
 
+
+<!-- ═══════════════════════════ TERMINAL SIMULATOR ═══════════════════════════ -->
+<section id="terminal-demo">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Live Pipeline Demo</h2>
+      <p>Watch the HLF compiler, runtime, and agent dispatch in action</p>
+    </div>
+    <div class="terminal fade-in">
+      <div class="terminal-header">
+        <div class="term-dot" style="background:#f43f5e"></div>
+        <div class="term-dot" style="background:#f59e0b"></div>
+        <div class="term-dot" style="background:#10b981"></div>
+        <div class="terminal-title">jules@sandbox:~/Jules_Choice</div>
+      </div>
+      <div class="terminal-body" id="term-output"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ VGII FRAMEWORK ═══════════════════════════ -->
+<section id="vgii">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>VGII Decision Framework</h2>
+      <p>Vision &middot; Goals &middot; Instincts &middot; Intentions &mdash; the 4-axis autonomous decision matrix</p>
+    </div>
+    <div class="vgii-grid fade-in">
+      <div class="vgii-card" style="border-top:3px solid #a78bfa">
+        <div class="vgii-letter" style="color:#a78bfa">V</div>
+        <div class="vgii-name">Vision</div>
+        <div class="vgii-desc">The north star. What are we building?</div>
+        <ul class="vgii-items">
+          <li>Build increasingly sophisticated autonomous software</li>
+          <li>functional_code_files_count</li>
+          <li>test_pass_rate &middot; tool_count</li>
+          <li>sprint_velocity &middot; creative_output_count</li>
+        </ul>
+      </div>
+      <div class="vgii-card" style="border-top:3px solid #06b6d4">
+        <div class="vgii-letter" style="color:#06b6d4">G</div>
+        <div class="vgii-name">Goals</div>
+        <div class="vgii-desc">RICE-scored sprint objectives</div>
+        <ul class="vgii-items">
+          <li>P0: Create real, useful Python tools</li>
+          <li>P0: Establish CI/CD pipeline</li>
+          <li>P1: Build first real agent class</li>
+          <li>P1: Generate data visualizations</li>
+        </ul>
+      </div>
+      <div class="vgii-card" style="border-top:3px solid #10b981">
+        <div class="vgii-letter" style="color:#10b981">I</div>
+        <div class="vgii-name">Instincts</div>
+        <div class="vgii-desc">Hardwired rules that cannot be overridden</div>
+        <ul class="vgii-items">
+          <li>NEVER_REDUCE: Never delete without replacing</li>
+          <li>ALWAYS_TEST: Every file must have tests</li>
+          <li>ALWAYS_LOG: Log every decision in ALIGN</li>
+          <li>REAL_OVER_PLACEHOLDER: No stubs allowed</li>
+          <li>ITERATE_UP: Each sprint more sophisticated</li>
+        </ul>
+      </div>
+      <div class="vgii-card" style="border-top:3px solid #f59e0b">
+        <div class="vgii-letter" style="color:#f59e0b">I</div>
+        <div class="vgii-name">Intentions</div>
+        <div class="vgii-desc">Current creative direction &amp; constraints</div>
+        <ul class="vgii-items">
+          <li>creative_direction: autonomous</li>
+          <li>pivot_allowed: true</li>
+          <li>Constraint: archive old work, never delete</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ GOVERNANCE ═══════════════════════════ -->
+<section id="governance">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Governance &amp; Decision Engine</h2>
+      <p>Every decision is auditable, repeatable, and RICE-scored</p>
+    </div>
+    <div class="gov-grid fade-in">
+      <div class="gov-card"><h4>&#x1F3AF; Enterprise Utility</h4><p>Build robust, scalable things a human would find useful in production</p></div>
+      <div class="gov-card"><h4>&#x1F4A1; Novelty &amp; Ideation</h4><p>Do not rebuild; innovate using the multi-modal ideation engine</p></div>
+      <div class="gov-card"><h4>&#x1F9E0; Deep Persona Integration</h4><p>Leverage specific capabilities of the 17 personas before defaulting to generalized logic</p></div>
+      <div class="gov-card"><h4>&#x1F9EA; Test-Driven Development</h4><p>Code does not exist until tested. Deployment requires 100% test pass</p></div>
+      <div class="gov-card"><h4>&#x1F680; Maintain Momentum</h4><p>Always ship complete functionality &mdash; no empty sprints or skeleton stubs</p></div>
+      <div class="gov-card"><h4>&#x1F4D0; RICE Scoring</h4><p><code>Score = (R &times; I &times; C) / E</code><br>Reach, Impact, Confidence, Effort &mdash; every task is quantitatively prioritized</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ SELF-IMPROVEMENT LOOP ═══════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Self-Improvement Loop</h2>
+      <p>Jules evaluates and improves itself every sprint &mdash; automatically</p>
+    </div>
+    <div class="improve-grid fade-in">
+      <div class="improve-metric"><h4>&#x1F4C8; Health Score &#x0394;</h4><div class="improve-target">Target: +5 per sprint</div><div class="improve-desc">Change in repo health score since last sprint</div></div>
+      <div class="improve-metric"><h4>&#x1F9EA; Test Count &#x0394;</h4><div class="improve-target">Target: +10 per sprint</div><div class="improve-desc">Number of new tests added each sprint</div></div>
+      <div class="improve-metric"><h4>&#x1F527; Tool Count</h4><div class="improve-target">Target: 8 tools by sprint 2</div><div class="improve-desc">Number of functional real tools</div></div>
+      <div class="improve-metric"><h4>&#x1F6AB; Placeholder Ratio</h4><div class="improve-target">Target: &lt; 0.1</div><div class="improve-desc">Ratio of placeholder to real code files</div></div>
+      <div class="improve-metric"><h4>&#x1F3C1; Goal Completion</h4><div class="improve-target">Target: &gt; 75%</div><div class="improve-desc">Sprint goal completion percentage</div></div>
+      <div class="improve-metric"><h4>&#x2705; Issues Closed</h4><div class="improve-target">Target: &gt; 3 per sprint</div><div class="improve-desc">Number of issues closed each sprint</div></div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════ PROGRAMS ═══════════════════════════ -->
 <section id="programs">
   <div class="container">
@@ -914,21 +1159,117 @@ classification <span class="sym">←</span> ${_RETURN_VALUE}
 </footer>
 
 <script>
-  // Nav scroll effect
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+// ═══ Canvas Particle System ═══
+(function(){
+  var c=document.getElementById('particles'),x=c.getContext('2d');
+  var W,H;function sz(){W=c.width=innerWidth;H=c.height=innerHeight}
+  sz();addEventListener('resize',sz);
+  var N=80,ps=[];
+  var cols=['rgba(167,139,250,','rgba(129,140,248,','rgba(192,132,252,','rgba(6,182,212,'];
+  for(var i=0;i<N;i++)ps.push({x:Math.random()*W,y:Math.random()*H,
+    r:Math.random()*1.8+0.3,dx:(Math.random()-0.5)*0.3,dy:(Math.random()-0.5)*0.3,
+    a:Math.random()*0.5+0.1,col:cols[Math.floor(Math.random()*4)]});
+  function draw(){
+    x.clearRect(0,0,W,H);
+    for(var i=0;i<N;i++){var p=ps[i];
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=p.col+p.a+')';x.fill();}
+    for(var i=0;i<N;i++)for(var j=i+1;j<N;j++){
+      var d=Math.hypot(ps[i].x-ps[j].x,ps[i].y-ps[j].y);
+      if(d<120){x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);
+        x.strokeStyle='rgba(124,58,237,'+(1-d/120)*0.06+')';x.stroke();}}
+    requestAnimationFrame(draw);}
+  draw();
+})();
 
-  // IntersectionObserver for scroll-triggered fade-ins
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+// ═══ Nav scroll ═══
+var nav=document.getElementById('nav');
+addEventListener('scroll',function(){nav.classList.toggle('scrolled',scrollY>20)});
 
-  // Stagger grid children
-  document.querySelectorAll('.arch-grid, .agent-grid, .tool-grid, .programs-grid').forEach(g => {
-    const items = g.children;
-    for (let i = 0; i < items.length; i++) items[i].style.transitionDelay = `${i * 0.06}s`;
+// ═══ Animated counters ═══
+var cio=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting){
+    e.target.querySelectorAll('.stat-value').forEach(function(el){
+      var txt=el.textContent.trim();var suffix='';
+      if(txt.indexOf('+')>-1){suffix='+';txt=txt.replace('+','');}
+      var t=parseInt(txt)||0;if(t===0)return;
+      var c=0;var step=Math.ceil(t/40);
+      el.textContent='0'+suffix;
+      var iv=setInterval(function(){c+=step;if(c>=t){c=t;clearInterval(iv)}
+        el.textContent=c+suffix;},30);
+    });
+    cio.unobserve(e.target);
+  }});
+},{threshold:0.3});
+document.querySelectorAll('.hero-stats').forEach(function(el){cio.observe(el)});
+
+// ═══ Scroll fade-in ═══
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-in').forEach(function(el){io.observe(el)});
+
+// ═══ Stagger grid children ═══
+document.querySelectorAll('.arch-grid,.agent-grid,.tool-grid,.programs-grid,.gov-grid,.improve-grid,.vgii-grid').forEach(function(g){
+  var items=g.children;
+  for(var i=0;i<items.length;i++)items[i].style.transitionDelay=i*0.06+'s';
+});
+
+// ═══ Tab switching ═══
+document.querySelectorAll('.code-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    var parent=tab.closest('.hlf-block');
+    parent.querySelectorAll('.code-tab').forEach(function(t){t.classList.remove('active')});
+    parent.querySelectorAll('.code-pane').forEach(function(p){p.classList.remove('active')});
+    tab.classList.add('active');
+    parent.querySelector('#'+tab.dataset.tab).classList.add('active');
   });
+});
+
+// ═══ Terminal Simulator ═══
+(function(){
+  var out=document.getElementById('term-output');
+  if(!out)return;
+  var lines=[
+    {t:'p',s:'$ '},{t:'c',s:'python -m hlf.hlfc hlf_programs/agent_dispatch.hlf --emit bytecode'},{t:'b'},
+    {t:'i',s:'[hlfc] Parsing HLF-v3 source...'},{t:'i',s:'[hlfc] AST generated: 14 nodes, 3 constraints, 13 branches'},
+    {t:'i',s:'[hlfc] Compiling to bytecode (38 opcodes)...'},
+    {t:'o',s:'[hlfc] \u2713 Output: agent_dispatch.hlfb (1,284 bytes, SHA-256: a7f3...c91e)'},{t:'b'},
+    {t:'p',s:'$ '},{t:'c',s:'python -m hlf.hlfrun agent_dispatch.hlfb --gas-limit 200'},{t:'b'},
+    {t:'i',s:'[hlfrun] Loading bytecode... checksum OK'},{t:'i',s:'[hlfrun] Gas budget: 200 units'},
+    {t:'d',s:'[hlfrun] SET task_type = "unclassified"'},
+    {t:'d',s:'[hlfrun] \u03C4(policy_checker.classify_task) \u2192 "security"'},
+    {t:'d',s:'[hlfrun] RECALL agent_capabilities top_k=14 \u2192 [sentinel, scribe, ...]'},
+    {t:'d',s:'[hlfrun] BRANCH: classification == "security" \u2192 DELEGATE sentinel'},
+    {t:'o',s:'[hlfrun] \u2713 RESULT 0 "dispatch_complete" (gas used: 47/200)'},{t:'b'},
+    {t:'i',s:'[ALIGN] Merkle proof logged: block #1,847 hash=0xf3a1...9d2e'},{t:'b'},
+    {t:'p',s:'$ '},{t:'c',s:'python -m hlf.hlfsh'},{t:'b'},
+    {t:'d',s:'HLF Shell v0.4.0 \u2014 type .help for commands'},
+    {t:'p',s:'hlf> '},{t:'c',s:'[SET] greeting = "Hello from the REPL"'},
+    {t:'o',s:'\u2192 greeting = "Hello from the REPL"'},
+    {t:'p',s:'hlf> '},{t:'c',s:'.exit'},{t:'d',s:'Goodbye.'},
+    {t:'p',s:'$ '},{t:'x'}
+  ];
+  var cls={p:'term-prompt',c:'term-cmd',d:'term-out',o:'term-ok',i:'term-info'};
+  var idx=0;
+  function type(){
+    if(idx>=lines.length)return;
+    var l=lines[idx++];
+    if(l.t==='b'){out.appendChild(document.createElement('br'));setTimeout(type,80);return;}
+    if(l.t==='x'){var s=document.createElement('span');s.className='term-cursor';s.innerHTML='\u00A0';out.appendChild(s);return;}
+    var s=document.createElement('span');s.className=cls[l.t]||'';out.appendChild(s);
+    var ch=0;var spd=l.t==='c'?25:8;
+    function nxt(){if(ch<l.s.length){s.textContent+=l.s[ch++];setTimeout(nxt,spd)}
+      else{setTimeout(type,l.t==='c'?400:120)}}
+    nxt();
+  }
+  var tio=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){type();tio.unobserve(e.target)}});
+  },{threshold:0.3});
+  tio.observe(out);
+})();
 </script>
 
 </body>
