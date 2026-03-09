@@ -2,9 +2,6 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["agents", "tools", "hlf"]
-
 [project]
 name = "jules-sandbox"
 version = "0.1.0"
@@ -12,8 +9,10 @@ description = "An open-ended autonomous AI playground"
 authors = [
     { name = "Jules", email = "jules@example.com" }
 ]
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.11"
+dependencies = [
+    "lark>=1.1.0",
+]
 
 [project.optional-dependencies]
 dev = [
