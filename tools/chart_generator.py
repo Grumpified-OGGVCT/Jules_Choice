@@ -6,9 +6,6 @@ Supports bar charts, progress charts, and health scorecards.
 """
 
 import os
-import sys
-import json
-from datetime import datetime
 
 
 def generate_health_badge(score: float, output_path: str = "docs/assets/generated/health_badge.svg") -> str:

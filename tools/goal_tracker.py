@@ -2,7 +2,6 @@
 """Goal tracker for Jules_Choice."""
 
 import os
-import sys
 import yaml
 from dataclasses import dataclass
 

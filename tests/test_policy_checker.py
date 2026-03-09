@@ -1,10 +1,9 @@
 """Tests for the policy compliance checker."""
 
 import os
-import pytest
 from tools.policy_checker import (
     load_policy, check_log_files_exist, check_ci_pipeline_exists,
-    check_pre_commit_hooks, check_security_scan_tool, run_policy_check,
+    run_policy_check,
 )
 
 

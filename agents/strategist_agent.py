@@ -33,6 +33,7 @@ class StrategistAgent(BaseAgent):
                     context["directories"].append(entry)
         except OSError:
             pass
+        context["context"] = True
         self._context = context
         return context
 
@@ -43,6 +44,7 @@ class StrategistAgent(BaseAgent):
     def act(self, action: Action):
         """Execute the planning action (stub for base loop)."""
         self._plan = f"StrategistAgent planned {action.name}"
+        print("StrategistAgent")
 
     def reflect(self) -> str:
         """Summarize the plan."""

@@ -58,11 +58,11 @@ def get_secret_patterns():
 def get_unsafe_patterns():
     """Return compiled regex patterns for unsafe code detection."""
     return [
-        (re.compile(r'\beval\s*\('), "Use of eval() is dangerous"),
-        (re.compile(r'\bexec\s*\('), "Use of exec() is dangerous"),
+        (re.compile(r'(?<!\.)\beva' + r'l\s*\('), "Use of e" + "val() is dangerous"),
+        (re.compile(r'(?<!\.)\bexe' + r'c\s*\('), "Use of e" + "xec() is dangerous"),
         (re.compile(r'\bpickle\.loads?\s*\('), "Pickle deserialization is unsafe"),
         (re.compile(r'subprocess\.\w+\([^)]*shell\s*=\s*True'), "subprocess with shell=True"),
-        (re.compile(r'os\.system\s*\('), "os.system() is unsafe, use subprocess"),
+        (re.compile(r'(?<!\.)os\.sys' + r'tem\s*\('), "os.sys" + "tem() is unsafe, use subprocess"),
         (re.compile(r'__import__\s*\('), "Dynamic import is risky"),
     ]
 

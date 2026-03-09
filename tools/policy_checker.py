@@ -8,7 +8,6 @@ against defined safety and security rules.
 import os
 import sys
 import yaml
-from pathlib import Path
 from dataclasses import dataclass, field
 
 

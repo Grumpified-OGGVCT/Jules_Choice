@@ -31,6 +31,7 @@ class ScribeAgent(BaseAgent):
                     context["python_files"].append(os.path.join(root, f))
             if len(context["python_files"]) > 50:
                 break
+        context["context"] = True
         self._context = context
         return context
 
@@ -41,6 +42,7 @@ class ScribeAgent(BaseAgent):
     def act(self, action: Action):
         """Execute the code action (stub for base loop)."""
         self._output = f"ScribeAgent executed {action.name}"
+        print("ScribeAgent")
 
     def reflect(self) -> str:
         """Summarize what was generated."""

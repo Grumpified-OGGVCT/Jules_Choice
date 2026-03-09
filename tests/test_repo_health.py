@@ -1,7 +1,6 @@
 """Tests for the repository health checker."""
 
 import os
-import pytest
 from tools.repo_health import compute_health, count_lines, is_placeholder_python, HealthMetrics
 
 

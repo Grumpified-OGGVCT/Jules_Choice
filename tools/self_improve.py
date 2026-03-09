@@ -7,10 +7,8 @@ then logs actions and recommendations.
 
 import os
 import sys
-import json
 import yaml
 from datetime import datetime
-from pathlib import Path
 
 
 def load_config(path: str = "jules_self_improvement.yaml") -> dict:
@@ -79,11 +77,11 @@ def log_improvement(metrics: dict, triggered_actions: list, log_path: str = "log
         for key, value in metrics.items():
             f.write(f"  {key}: {value}\n")
         if triggered_actions:
-            f.write(f"\nTriggered Actions:\n")
+            f.write("\nTriggered Actions:\n")
             for action in triggered_actions:
                 f.write(f"  [{action.get('priority', '?')}] {action.get('action', '?')}\n")
         else:
-            f.write(f"\nNo improvement actions triggered. All metrics within targets.\n")
+            f.write("\nNo improvement actions triggered. All metrics within targets.\n")
 
 
 def main():
@@ -97,7 +95,7 @@ def main():
         sys.exit(1)
 
     metrics = get_current_metrics()
-    print(f"\nCurrent Metrics:")
+    print("\nCurrent Metrics:")
     for key, value in metrics.items():
         if isinstance(value, float):
             print(f"  {key}: {value:.2f}")
@@ -110,10 +108,10 @@ def main():
         for action in triggered:
             print(f"  [{action.get('priority', '?')}] {action.get('action', '?')}")
     else:
-        print(f"\nAll metrics within targets. No actions needed.")
+        print("\nAll metrics within targets. No actions needed.")
 
     log_improvement(metrics, triggered)
-    print(f"\nLogged to logs/self_improvement.log")
+    print("\nLogged to logs/self_improvement.log")
 
 
 if __name__ == '__main__':

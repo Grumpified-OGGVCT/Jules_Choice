@@ -24,6 +24,7 @@ class SentinelAgent(BaseAgent):
             "has_security_md": os.path.exists("SECURITY.md"),
             "has_ci": os.path.exists(".github/workflows/ci.yml"),
         }
+        context["context"] = True
         self._context = context
         return context
 
@@ -48,6 +49,7 @@ class SentinelAgent(BaseAgent):
             ]
         except Exception as exc:
             self._findings = [{"error": str(exc)}]
+        print("SentinelAgent")
 
     def reflect(self) -> str:
         """Summarize findings."""
