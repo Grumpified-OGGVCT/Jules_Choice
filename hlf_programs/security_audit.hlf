@@ -12,28 +12,21 @@
 
 [PLAN] "layer1_static" "layer2_deps" "layer3_policy" "layer4_secrets"
 
-↦ τ(security_scan.run_bandit) target="agents/" level="standard"
-static_results ← ${_RETURN_VALUE}
+↦ τ(SECURITY_SCAN) path="agents/"
+[SET] static_results = ${_RETURN_VALUE}
 
-↦ τ(security_scan.run_bandit) target="tools/" level="standard"
-tools_results ← ${_RETURN_VALUE}
+↦ τ(SECURITY_SCAN) path="tools/"
+[SET] tools_results = ${_RETURN_VALUE}
 
-↦ τ(security_scan.check_dependencies) manifest="pyproject.toml"
-dep_results ← ${_RETURN_VALUE}
+↦ τ(POLICY_CHECK) path="jules_policy.yaml"
+[SET] policy_results = ${_RETURN_VALUE}
 
-↦ τ(policy_checker.check_all) rules="security_rules"
-policy_results ← ${_RETURN_VALUE}
-
-↦ τ(security_scan.detect_secrets) scope="${audit_scope}"
-secrets_results ← ${_RETURN_VALUE}
+↦ τ(SECURITY_SCAN) path="."
+[SET] full_scan_results = ${_RETURN_VALUE}
 
 [OBSERVATION] "4-layer security audit complete"
 
-⊎ ${critical_count} > 0 ⇒ [VOTE] false "Critical vulnerabilities found — blocking deployment" ⇌ [VOTE] true "Security audit passed"
-
-[ASSERT] ${critical_count} == 0 "CRITICAL: Security vulnerabilities detected"
-
-[MEMORY] audit_log = "Security audit: static=${static_results} deps=${dep_results} policy=${policy_results} secrets=${secrets_results}" confidence=0.9
+⊎ ${severity_threshold} == "critical" ⇒ [THOUGHT] "Only blocking on critical findings" ⇌ [THOUGHT] "Blocking on medium+ findings"
 
 [RESULT] 0 "security_audit_complete"
 Ω

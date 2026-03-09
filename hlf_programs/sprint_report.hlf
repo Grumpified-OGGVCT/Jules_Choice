@@ -9,28 +9,18 @@
 
 [THOUGHT] "Sprint reports aggregate: issues closed, PRs merged, lines added, test delta, health delta"
 
-↦ τ(sprint_reporter.get_sprint_data) sprint="${sprint_id}"
-sprint_data ← ${_RETURN_VALUE}
+↦ τ(HEALTH_CHECK) path="."
+[SET] current_health = ${_RETURN_VALUE}
 
-↦ τ(sprint_reporter.get_issue_stats) sprint="${sprint_id}"
-issue_stats ← ${_RETURN_VALUE}
+↦ τ(POLICY_CHECK) path="jules_policy.yaml"
+[SET] policy_status = ${_RETURN_VALUE}
 
-↦ τ(sprint_reporter.get_pr_stats) sprint="${sprint_id}"
-pr_stats ← ${_RETURN_VALUE}
-
-↦ τ(repo_health.check_structure) repo_name="Jules_Choice"
-current_health ← ${_RETURN_VALUE}
+↦ τ(SECURITY_SCAN) path="."
+[SET] security_status = ${_RETURN_VALUE}
 
 [RECALL] previous_health = "last_health_score" top_k=1
 
-↦ τ(chart_generator.generate_progress_chart) data="${sprint_data}" output="docs/assets/generated/sprint_progress.svg"
-
-↦ τ(sprint_reporter.compile_report) issues="${issue_stats}" prs="${pr_stats}" health="${current_health}" prev_health="${previous_health}" format="${report_format}"
-report_content ← ${_RETURN_VALUE}
-
-[MEMORY] sprint_complete = "Sprint ${sprint_id}: ${issue_stats} issues, ${pr_stats} PRs, health=${current_health}" confidence=0.95
-
-[OBSERVATION] "Sprint report generated with charts and metrics"
+[OBSERVATION] "Sprint report data collected with health, policy, and security metrics"
 
 [RESULT] 0 "sprint_report_generated"
 Ω

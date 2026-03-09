@@ -9,8 +9,8 @@
 
 [THOUGHT] "Agent dispatch maps task types to persona specializations using the 14-persona matrix"
 
-↦ τ(policy_checker.classify_task) input="${task_type}"
-classification ← ${_RETURN_VALUE}
+↦ τ(CLASSIFY_TASK) description="${task_type}"
+[SET] classification = ${_RETURN_VALUE}
 
 [RECALL] agent_capabilities = "persona_registry" top_k=14
 
@@ -30,8 +30,6 @@ classification ← ${_RETURN_VALUE}
 ⊎ ${classification} == "consolidation" ⇒ [DELEGATE] "consolidator" "${task_type}"
 
 [OBSERVATION] "Task dispatched to ${classification} specialist"
-
-[MEMORY] dispatch_log = "Task ${task_type} routed to ${classification} agent" confidence=0.85
 
 [RESULT] 0 "dispatch_complete"
 Ω
