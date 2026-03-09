@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jules Sandbox — HLF-Powered Autonomous AI Playground</title>
+  <meta name="description" content="Jules Sandbox: A living, breathing autonomous AI playground powered by the Hieroglyphic Logic Framework — gas-metered, cryptographically auditable, and ever-evolving.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN SYSTEM — matches the repo's purple-gradient SVG palette
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      /* Core palette — pulled from banner.svg gradient (#0f0c29, #302b63, #24243e) */
+      --bg-void:      #0a0814;
+      --bg-deep:      #0f0c29;
+      --bg-mid:       #1a1640;
+      --bg-card:      #1e1b4b;
+      --bg-glass:     rgba(30, 27, 75, 0.55);
+      --border-glass: rgba(167, 139, 250, 0.1);
+      --border-hover: rgba(167, 139, 250, 0.35);
+
+      /* Text */
+      --text-primary:   #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted:     #64748b;
+
+      /* Accents — from SVG fills */
+      --violet-bright:  #a78bfa;
+      --violet-mid:     #818cf8;
+      --violet-deep:    #7c3aed;
+      --violet-dim:     rgba(167, 139, 250, 0.12);
+      --purple-bright:  #c084fc;
+      --cyan:           #06b6d4;
+      --cyan-dim:       rgba(6, 182, 212, 0.12);
+      --emerald:        #10b981;
+      --emerald-dim:    rgba(16, 185, 129, 0.12);
+      --amber:          #f59e0b;
+      --amber-dim:      rgba(245, 158, 11, 0.12);
+      --rose:           #f43f5e;
+      --rose-dim:       rgba(244, 63, 94, 0.12);
+
+      --gradient-brand: linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #c084fc 100%);
+      --gradient-hero:  linear-gradient(135deg, #7c3aed 0%, #818cf8 50%, #06b6d4 100%);
+      --shadow-glow:    0 0 80px rgba(124, 58, 237, 0.12);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-void);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated backgrounds ── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .bg-orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(100px); opacity: 0.4;
+    }
+    .bg-orb-1 { top: -15%; left: 10%; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+      animation: drift 22s ease-in-out infinite; }
+    .bg-orb-2 { bottom: -10%; right: 5%; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%);
+      animation: drift 28s ease-in-out infinite reverse; }
+    .bg-orb-3 { top: 40%; left: 50%; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(192,132,252,0.08) 0%, transparent 70%);
+      animation: drift 18s ease-in-out infinite 4s; }
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -30px) scale(1.05); }
+      66% { transform: translate(-25px, 20px) scale(0.95); }
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    .container-wide { max-width: 1400px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(24px) saturate(1.5);
+      -webkit-backdrop-filter: blur(24px) saturate(1.5);
+      background: rgba(10, 8, 20, 0.85);
+      border-bottom: 1px solid var(--border-glass);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: var(--shadow-glow); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .nav-brand {
+      font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em;
+      background: var(--gradient-brand); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+      font-weight: 500; transition: color 0.2s; letter-spacing: 0.02em;
+    }
+    .nav-links a:hover { color: var(--violet-bright); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--violet-dim); color: var(--violet-bright);
+      padding: 0.5rem 1.1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; border: 1px solid rgba(167,139,250,0.2);
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: rgba(167,139,250,0.2); transform: translateY(-1px); }
+    .nav-cta svg { flex-shrink: 0; }
+
+    /* ── Hero ── */
+    .hero { padding: 7rem 0 2rem; text-align: center; }
+    .hero-banner { width: 100%; max-width: 1000px; margin: 0 auto 3rem; border-radius: var(--radius); }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--violet-dim); color: var(--violet-bright);
+      padding: 0.4rem 1.1rem; border-radius: 99px; font-size: 0.78rem; font-weight: 600;
+      border: 1px solid rgba(167,139,250,0.2); margin-bottom: 2rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.3); }
+      50% { box-shadow: 0 0 24px 4px rgba(124,58,237,0.12); }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 900;
+      letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 1.5rem;
+    }
+    .hero h1 .gradient {
+      background: var(--gradient-brand); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--text-secondary); max-width: 720px;
+      margin: 0 auto 3rem; line-height: 1.85;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+      margin: 2.5rem 0;
+    }
+    .stat {
+      text-align: center; padding: 1.4rem 1.8rem;
+      background: var(--bg-glass); backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass); border-radius: var(--radius);
+      min-width: 120px; transition: all 0.25s;
+    }
+    .stat:hover { transform: translateY(-4px); border-color: var(--border-hover);
+      box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
+    .stat-value {
+      font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono);
+      background: var(--gradient-brand); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-top: 0.2rem; font-weight: 600;
+    }
+
+    /* ── Sections ── */
+    section { padding: 5rem 0; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-header h2 {
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    }
+    .section-header p { color: var(--text-secondary); font-size: 1.05rem; max-width: 640px; margin: 0 auto; }
+    .section-divider {
+      width: 60px; height: 3px; margin: 0 auto 3rem;
+      background: var(--gradient-brand); border-radius: 2px;
+    }
+
+    /* ── SVG showcase ── */
+    .svg-showcase {
+      background: var(--bg-deep); border: 1px solid var(--border-glass);
+      border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem;
+      text-align: center; transition: all 0.3s;
+    }
+    .svg-showcase:hover { border-color: var(--border-hover); box-shadow: var(--shadow-glow); }
+    .svg-showcase img { width: 100%; max-width: 1000px; border-radius: var(--radius-sm); }
+    .svg-showcase-caption {
+      margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);
+      font-weight: 500; letter-spacing: 0.02em;
+    }
+
+    /* ── Architecture cards ── */
+    .arch-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+    .arch-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+      border: 1px solid var(--border-glass); border-radius: var(--radius);
+      padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .arch-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .arch-card:hover { border-color: var(--border-hover); transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(124,58,237,0.08); }
+    .arch-card:hover::before { opacity: 1; }
+    .arch-icon {
+      width: 44px; height: 44px; border-radius: 11px; display: flex;
+      align-items: center; justify-content: center; font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .arch-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .arch-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7; }
+    .arch-tag {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.68rem;
+      padding: 0.15rem 0.55rem; border-radius: 4px; margin-top: 0.7rem; margin-right: 0.25rem;
+    }
+    /* Accent variants */
+    .a-violet .arch-icon, .a-violet .arch-tag { background: var(--violet-dim); color: var(--violet-bright); }
+    .a-violet::before { background: var(--gradient-brand); }
+    .a-cyan .arch-icon, .a-cyan .arch-tag { background: var(--cyan-dim); color: var(--cyan); }
+    .a-cyan::before { background: linear-gradient(90deg, var(--cyan), var(--violet-mid)); }
+    .a-emerald .arch-icon, .a-emerald .arch-tag { background: var(--emerald-dim); color: var(--emerald); }
+    .a-emerald::before { background: linear-gradient(90deg, var(--emerald), var(--cyan)); }
+    .a-amber .arch-icon, .a-amber .arch-tag { background: var(--amber-dim); color: var(--amber); }
+    .a-amber::before { background: linear-gradient(90deg, var(--amber), var(--violet-bright)); }
+    .a-rose .arch-icon, .a-rose .arch-tag { background: var(--rose-dim); color: var(--rose); }
+    .a-rose::before { background: linear-gradient(90deg, var(--rose), var(--amber)); }
+    .a-purple .arch-icon, .a-purple .arch-tag { background: rgba(192,132,252,0.12); color: var(--purple-bright); }
+    .a-purple::before { background: linear-gradient(90deg, var(--purple-bright), var(--violet-mid)); }
+
+    /* ── HLF code showcase ── */
+    .hlf-block {
+      background: var(--bg-deep); border: 1px solid var(--border-glass);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .hlf-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(124,58,237,0.06);
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .hlf-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .hlf-filename { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+    .hlf-code {
+      padding: 1.5rem; font-family: var(--font-mono); font-size: 0.82rem;
+      line-height: 1.9; overflow-x: auto; color: var(--text-secondary);
+      white-space: pre;
+    }
+    .hlf-code .tag   { color: var(--violet-bright); font-weight: 600; }
+    .hlf-code .str   { color: var(--emerald); }
+    .hlf-code .sym   { color: var(--cyan); font-weight: 700; }
+    .hlf-code .var   { color: var(--amber); }
+    .hlf-code .cmt   { color: var(--text-muted); font-style: italic; }
+    .hlf-code .agent { color: var(--purple-bright); }
+    .hlf-code .num   { color: var(--rose); }
+
+    /* ── Toolchain grid ── */
+    .tool-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .tool-chip {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: var(--bg-glass); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass); border-radius: var(--radius-sm);
+      padding: 1.1rem 1.25rem; transition: all 0.2s;
+    }
+    .tool-chip:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .tool-emoji { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .tool-name { font-size: 0.85rem; font-weight: 700; }
+    .tool-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; line-height: 1.5; }
+    .tool-file { font-family: var(--font-mono); font-size: 0.68rem; color: var(--violet-bright);
+      margin-top: 0.3rem; display: inline-block; }
+
+    /* ── Pipeline flow ── */
+    .pipeline {
+      background: var(--bg-deep); border: 1px solid var(--border-glass);
+      border-radius: var(--radius); padding: 2.5rem; overflow-x: auto;
+    }
+    .pipeline-steps { display: flex; align-items: stretch; gap: 0; min-width: 920px; }
+    .pipeline-step {
+      flex: 1; padding: 1.2rem 1rem; text-align: center; position: relative;
+      border-right: 1px solid var(--border-glass);
+    }
+    .pipeline-step:last-child { border-right: none; }
+    .pipeline-step::after {
+      content: '→'; position: absolute; right: -0.6rem; top: 50%;
+      transform: translateY(-50%); color: var(--violet-bright); font-size: 1.1rem;
+      font-weight: 700; z-index: 2; opacity: 0.6;
+    }
+    .pipeline-step:last-child::after { display: none; }
+    .step-num {
+      width: 30px; height: 30px; border-radius: 50%; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 0.75rem;
+      font-weight: 700; font-family: var(--font-mono); margin-bottom: 0.6rem;
+      background: var(--violet-dim); color: var(--violet-bright);
+      border: 1px solid rgba(167,139,250,0.25);
+    }
+    .pipeline-step h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .pipeline-step p { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Agent roster ── */
+    .agent-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.75rem;
+    }
+    .agent-chip {
+      display: flex; align-items: center; gap: 0.65rem;
+      background: var(--bg-glass); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass); border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem; font-size: 0.82rem; font-weight: 600;
+      transition: all 0.2s; cursor: default;
+    }
+    .agent-chip:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .agent-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      animation: blink 2.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+
+    /* ── Programs showcase ── */
+    .programs-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .program-card {
+      background: var(--bg-glass); border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm); padding: 1.25rem; text-align: center;
+      transition: all 0.2s;
+    }
+    .program-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .program-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .program-name {
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
+      color: var(--violet-bright); margin-bottom: 0.3rem;
+    }
+    .program-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Changelog / Releases ── */
+    .releases { list-style: none; }
+    .release-item {
+      padding: 1.5rem 2rem; border-left: 2px solid var(--border-glass);
+      margin-left: 1rem; position: relative; margin-bottom: 1.5rem;
+    }
+    .release-item::before {
+      content: ''; position: absolute; left: -7px; top: 1.5rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--violet-deep); border: 2px solid var(--violet-bright);
+    }
+    .release-version { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem;
+      color: var(--violet-bright); }
+    .release-date { font-size: 0.8rem; color: var(--text-muted); margin-left: 0.75rem; }
+    .release-body { margin-top: 0.75rem; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7; }
+    .release-body strong { color: var(--text-primary); }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 0; text-align: center;
+      border-top: 1px solid var(--border-glass); margin-top: 2rem;
+    }
+    footer p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.8; }
+    footer a { color: var(--violet-bright); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Scroll animations ── */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 6rem 0 2rem; }
+      .hero-stats { gap: 0.75rem; }
+      .stat { min-width: 90px; padding: 1rem; }
+      .stat-value { font-size: 1.4rem; }
+      .arch-grid { grid-template-columns: 1fr; }
+      .pipeline { padding: 1.5rem; }
+      .pipeline-steps { flex-direction: column; min-width: unset; }
+      .pipeline-step { border-right: none; border-bottom: 1px solid var(--border-glass); }
+      .pipeline-step::after { display: none; }
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">⟡ Jules Sandbox</div>
+    <ul class="nav-links">
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#hlf-engine">HLF Engine</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#agents">Agents</a></li>
+      <li><a href="#toolchain">Toolchain</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#releases">Releases</a></li>
+    </ul>
+    <a href="https://github.com/Grumpified-OGGVCT/Jules_Choice" class="nav-cta" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Source
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <img src="assets/banner.svg" alt="Jules Sandbox Banner" class="hero-banner">
+    <div class="hero-badge">⚡ Fully Synced from Sovereign Agentic OS</div>
+    <h1>Intent In. <span class="gradient">Working App Out.</span></h1>
+    <p class="hero-sub">
+      An autonomous AI playground equipped with the complete
+      <strong>Hieroglyphic Logic Framework</strong> toolchain — compiler, runtime,
+      bytecode VM, InfiniteRAG, 28 core agents, and a self-improving tool forge.
+      Every operation is gas-metered, every action cryptographically auditable.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">15</div>
+        <div class="stat-label">HLF Modules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">28</div>
+        <div class="stat-label">Core Agents</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">14</div>
+        <div class="stat-label">Thinking Hats</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">38</div>
+        <div class="stat-label">VM Opcodes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">5</div>
+        <div class="stat-label">HLF Programs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">84+</div>
+        <div class="stat-label">Tests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ HOW IT WORKS ═══════════════════════════ -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>How Jules Works</h2>
+      <p>From vision to execution — a sovereign, self-improving autonomous agent</p>
+    </div>
+
+    <div class="svg-showcase fade-in">
+      <img src="assets/how-it-works.svg" alt="How Jules Works — Architecture Flow">
+      <div class="svg-showcase-caption">The Jules decision → execution pipeline</div>
+    </div>
+
+    <div class="arch-grid" style="margin-top: 2rem;">
+
+      <div class="arch-card a-violet fade-in">
+        <div class="arch-icon">📜</div>
+        <h3>Governance Layer</h3>
+        <p>Living Spec (HLS), bytecode VM opcodes, ALIGN trust ledger, OpenClaw strategies, gas costs, module import rules, and service contracts.</p>
+        <span class="arch-tag">hls.yaml</span>
+        <span class="arch-tag">bytecode_spec.yaml</span>
+        <span class="arch-tag">ALIGN_LEDGER.yaml</span>
+      </div>
+
+      <div class="arch-card a-cyan fade-in">
+        <div class="arch-icon">🧠</div>
+        <h3>HLF Engine</h3>
+        <p>15-module toolchain: compiler (hlfc), runtime (hlfrun), bytecode VM, REPL shell (hlfsh), formatter, linter, codegen, error corrector — ~950KB of production toolchain code.</p>
+        <span class="arch-tag">hlfc.py</span>
+        <span class="arch-tag">hlfrun.py</span>
+        <span class="arch-tag">bytecode.py</span>
+        <span class="arch-tag">hlfsh.py</span>
+      </div>
+
+      <div class="arch-card a-emerald fade-in">
+        <div class="arch-icon">🔮</div>
+        <h3>Intelligence Layer</h3>
+        <p>InfiniteRAG for unbounded context, InsAIts V2 for insight extraction, Intent Capsules for semantic routing, Memory Nodes for persistent agent cognition.</p>
+        <span class="arch-tag">infinite_rag.py</span>
+        <span class="arch-tag">insaits.py</span>
+        <span class="arch-tag">intent_capsule.py</span>
+        <span class="arch-tag">memory_node.py</span>
+      </div>
+
+      <div class="arch-card a-amber fade-in">
+        <div class="arch-icon">🎩</div>
+        <h3>14-Hat Thinking Engine</h3>
+        <p>Multi-perspective analysis — Architect, Security, Ethics, UX, Performance hats — with Dream State consolidation and a Weaver meta-agent for synthesis.</p>
+        <span class="arch-tag">hat_engine.py</span>
+        <span class="arch-tag">dream_state.py</span>
+      </div>
+
+      <div class="arch-card a-rose fade-in">
+        <div class="arch-icon">🔒</div>
+        <h3>Security & Isolation</h3>
+        <p>ACFS worktree confinement, AST validation, seccomp container hardening, vault decryption, dead man's switch, canary monitoring agents.</p>
+        <span class="arch-tag">acfs.py</span>
+        <span class="arch-tag">seccomp.json</span>
+        <span class="arch-tag">ast_validator.py</span>
+      </div>
+
+      <div class="arch-card a-purple fade-in">
+        <div class="arch-icon">🔀</div>
+        <h3>Agent Orchestration</h3>
+        <p>Spindle DAG engine for parallel agent execution, Crew orchestrator for multi-agent collaboration, Event bus for real-time coordination, Gateway router with tier-based model dispatch.</p>
+        <span class="arch-tag">spindle.py</span>
+        <span class="arch-tag">crew_orchestrator.py</span>
+        <span class="arch-tag">event_bus.py</span>
+        <span class="arch-tag">router.py</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ REPO MAP ═══════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Repository Map</h2>
+      <p>The complete file structure at a glance</p>
+    </div>
+    <div class="svg-showcase fade-in">
+      <img src="assets/repo-map.svg" alt="Repository Structure Map">
+      <div class="svg-showcase-caption">15 directories · 60+ source files · Full HLF toolchain synced from upstream</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ HLF CODE ═══════════════════════════ -->
+<section id="hlf-engine">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>The Hieroglyphic Logic Framework</h2>
+      <p>A language that makes AI intent deterministic, auditable, and gas-metered</p>
+    </div>
+
+    <div class="hlf-block fade-in">
+      <div class="hlf-header">
+        <div class="hlf-dot" style="background: var(--rose);"></div>
+        <div class="hlf-dot" style="background: var(--amber);"></div>
+        <div class="hlf-dot" style="background: var(--emerald);"></div>
+        <div class="hlf-filename">hlf_programs/agent_dispatch.hlf</div>
+      </div>
+      <div class="hlf-code"><span class="tag">[HLF-v3]</span>
+<span class="tag">[SET]</span> task_type = <span class="str">"unclassified"</span>
+<span class="tag">[SET]</span> urgency = <span class="str">"normal"</span>
+<span class="tag">[SET]</span> max_delegation_depth = <span class="num">3</span>
+
+<span class="tag">[INTENT]</span> <span class="str">"Route incoming task to the optimal persona agent"</span>
+<span class="tag">[CONSTRAINT]</span> <span class="str">"deterministic"</span> <span class="str">"true"</span>
+
+<span class="tag">[THOUGHT]</span> <span class="str">"Agent dispatch maps task types via the 14-persona matrix"</span>
+
+<span class="sym">↦</span> <span class="sym">τ</span>(policy_checker.classify_task) input=<span class="str">"${task_type}"</span>
+classification <span class="sym">←</span> ${_RETURN_VALUE}
+
+<span class="tag">[RECALL]</span> agent_capabilities = <span class="str">"persona_registry"</span> top_k=<span class="num">14</span>
+
+<span class="sym">⊎</span> ${classification} == <span class="str">"security"</span>      <span class="sym">⇒</span> <span class="tag">[DELEGATE]</span> <span class="agent">"sentinel"</span> <span class="str">"${task_type}"</span>
+<span class="sym">⊎</span> ${classification} == <span class="str">"documentation"</span> <span class="sym">⇒</span> <span class="tag">[DELEGATE]</span> <span class="agent">"scribe"</span>   <span class="str">"${task_type}"</span>
+<span class="sym">⊎</span> ${classification} == <span class="str">"analysis"</span>      <span class="sym">⇒</span> <span class="tag">[DELEGATE]</span> <span class="agent">"oracle"</span>   <span class="str">"${task_type}"</span>
+<span class="sym">⊎</span> ${classification} == <span class="str">"creative"</span>      <span class="sym">⇒</span> <span class="tag">[DELEGATE]</span> <span class="agent">"palette"</span>  <span class="str">"${task_type}"</span>
+<span class="sym">⊎</span> ${classification} == <span class="str">"quality"</span>       <span class="sym">⇒</span> <span class="tag">[DELEGATE]</span> <span class="agent">"cove"</span>     <span class="str">"${task_type}"</span>
+<span class="cmt">// ... 9 more persona routes</span>
+
+<span class="tag">[MEMORY]</span> dispatch_log = <span class="str">"Task routed to ${classification} agent"</span> confidence=<span class="num">0.85</span>
+<span class="tag">[RESULT]</span> <span class="num">0</span> <span class="str">"dispatch_complete"</span>
+<span class="sym">Ω</span></div>
+    </div>
+
+    <div class="arch-grid" style="margin-top: 2rem;">
+      <div class="arch-card a-cyan fade-in">
+        <div class="arch-icon">⚙️</div>
+        <h3>Bytecode VM</h3>
+        <p>38 opcodes compiled to binary bytecode. Stack-machine execution with SHA-256 integrity checksums. Includes SPEC_DEFINE, GATE, SEAL lifecycle opcodes.</p>
+      </div>
+      <div class="arch-card a-emerald fade-in">
+        <div class="arch-icon">⛽</div>
+        <h3>Gas Metering</h3>
+        <p>Every operation has a deterministic gas cost. Budget enforcement prevents runaway execution. Host functions cost more than pure computation.</p>
+      </div>
+      <div class="arch-card a-amber fade-in">
+        <div class="arch-icon">🔗</div>
+        <h3>ALIGN Merkle Audit</h3>
+        <p>Every action logged with cryptographic proof chain. Immutable Merkle tree enables forensic reconstruction of any execution path.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PIPELINE ═══════════════════════════ -->
+<section id="pipeline">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Execution Pipeline</h2>
+      <p>From human intent to deterministic, gas-metered execution</p>
+    </div>
+
+    <div class="pipeline fade-in">
+      <div class="pipeline-steps">
+        <div class="pipeline-step">
+          <div class="step-num">1</div>
+          <h4>Intent</h4>
+          <p>Natural language or pre-compiled HLF AST arrives via Redis stream</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">2</div>
+          <h4>Gate</h4>
+          <p>Sentinel checks ALIGN policy, tier permissions, gas budget</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">3</div>
+          <h4>Route</h4>
+          <p>Model router selects optimal LLM based on task tier</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">4</div>
+          <h4>Compile</h4>
+          <p>Text → HLF source → hlfc AST → bytecode (38 opcodes)</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">5</div>
+          <h4>Execute</h4>
+          <p>Stack VM runs bytecode with gas metering + host dispatch</p>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">6</div>
+          <h4>Audit</h4>
+          <p>ALIGN Merkle log records cryptographic proof chain</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ AGENTS ═══════════════════════════ -->
+<section id="agents">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Agent Ecosystem</h2>
+      <p>28 specialized agents orchestrated through the Spindle DAG engine</p>
+    </div>
+
+    <div class="svg-showcase fade-in" style="margin-bottom: 2rem;">
+      <img src="assets/personas-grid.svg" alt="Jules Persona Pack">
+      <div class="svg-showcase-caption">The 14-persona matrix — each agent has specialized capabilities and permissions</div>
+    </div>
+
+    <div class="agent-grid fade-in">
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--rose)"></div> Sentinel</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--cyan)"></div> Scribe</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--amber)"></div> Arbiter</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--emerald)"></div> Crew Orchestrator</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--violet-bright)"></div> Hat Engine (×14)</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--cyan)"></div> Dream State</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--rose)"></div> Canary</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--amber)"></div> Memory Scribe</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--emerald)"></div> Event Bus</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--violet-bright)"></div> Tool Forge</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--cyan)"></div> Tool Registry</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--rose)"></div> Dead Man's Switch</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--amber)"></div> ACFS Manager</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--emerald)"></div> Agent Sandbox</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--violet-bright)"></div> Spindle Engine</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--cyan)"></div> Host Dispatcher</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--rose)"></div> Context Tiering</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--amber)"></div> Fractal Summarizer</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--emerald)"></div> Scheduler Daemon</div>
+      <div class="agent-chip"><div class="agent-dot" style="color: var(--violet-bright)"></div> Gateway Router</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PR REVIEW ═══════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>PR Review Protocol</h2>
+      <p>Every pull request is evaluated through the Fourteen Hats protocol</p>
+    </div>
+    <div class="svg-showcase fade-in">
+      <img src="assets/eleven-hats.svg" alt="Fourteen Hats PR Review Protocol">
+      <div class="svg-showcase-caption">14 specialized perspectives ensure comprehensive review coverage</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ TOOLCHAIN ═══════════════════════════ -->
+<section id="toolchain">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Complete Toolchain</h2>
+      <p>Everything from the compiler to the self-improvement loop</p>
+    </div>
+
+    <div class="tool-grid fade-in">
+      <div class="tool-chip">
+        <div class="tool-emoji">🔨</div>
+        <div>
+          <div class="tool-name">HLF Compiler</div>
+          <div class="tool-desc">Full parser + AST generation from HLF v3/v4 source</div>
+          <div class="tool-file">hlf/hlfc.py (45KB)</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">▶️</div>
+        <div>
+          <div class="tool-name">HLF Runtime</div>
+          <div class="tool-desc">Stack-machine execution engine with gas metering</div>
+          <div class="tool-file">hlf/hlfrun.py (40KB)</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">💾</div>
+        <div>
+          <div class="tool-name">Bytecode VM</div>
+          <div class="tool-desc">38-opcode binary compiler + disassembler</div>
+          <div class="tool-file">hlf/bytecode.py (38KB)</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">🐚</div>
+        <div>
+          <div class="tool-name">HLF Shell (REPL)</div>
+          <div class="tool-desc">Interactive read-eval-print loop for HLF code</div>
+          <div class="tool-file">hlf/hlfsh.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">🧹</div>
+        <div>
+          <div class="tool-name">Linter + Formatter</div>
+          <div class="tool-desc">Static analysis and auto-formatting for .hlf files</div>
+          <div class="tool-file">hlf/hlflint.py · hlffmt.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">♾️</div>
+        <div>
+          <div class="tool-name">InfiniteRAG</div>
+          <div class="tool-desc">Unbounded context through fractal summarization</div>
+          <div class="tool-file">hlf/infinite_rag.py (31KB)</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">💡</div>
+        <div>
+          <div class="tool-name">InsAIts V2</div>
+          <div class="tool-desc">Automated insight extraction and pattern detection</div>
+          <div class="tool-file">hlf/insaits.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">📦</div>
+        <div>
+          <div class="tool-name">Intent Capsules</div>
+          <div class="tool-desc">Semantic routing of natural-language intents to HLF</div>
+          <div class="tool-file">hlf/intent_capsule.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">🧪</div>
+        <div>
+          <div class="tool-name">Tool Forge</div>
+          <div class="tool-desc">Auto-generates tools when agents loop 3×. LLM-judged, AST-validated, sandboxed.</div>
+          <div class="tool-file">agents/core/tool_forge.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">🔄</div>
+        <div>
+          <div class="tool-name">Self-Improvement Engine</div>
+          <div class="tool-desc">Automated improvement loop with self-evaluation</div>
+          <div class="tool-file">tools/self_improve.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">📊</div>
+        <div>
+          <div class="tool-name">Chart Generator</div>
+          <div class="tool-desc">SVG chart and badge generation from data</div>
+          <div class="tool-file">tools/chart_generator.py</div>
+        </div>
+      </div>
+      <div class="tool-chip">
+        <div class="tool-emoji">🏗️</div>
+        <div>
+          <div class="tool-name">Diagram Generator</div>
+          <div class="tool-desc">Architecture diagram auto-generation</div>
+          <div class="tool-file">tools/diagram_generator.py</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PROGRAMS ═══════════════════════════ -->
+<section id="programs">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>HLF Programs</h2>
+      <p>Real .hlf programs that drive the autonomous pipeline</p>
+    </div>
+    <div class="programs-grid fade-in">
+      <div class="program-card">
+        <div class="program-icon">🚀</div>
+        <div class="program-name">agent_dispatch.hlf</div>
+        <div class="program-desc">Routes tasks to optimal persona based on 14-persona matrix classification</div>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">🎯</div>
+        <div class="program-name">decision_matrix.hlf</div>
+        <div class="program-desc">RICE-scored prioritization engine for autonomous sprint planning</div>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">💊</div>
+        <div class="program-name">health_check.hlf</div>
+        <div class="program-desc">System health monitoring with anomaly detection and alerting</div>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">🛡️</div>
+        <div class="program-name">security_audit.hlf</div>
+        <div class="program-desc">Automated security audit pipeline with ALIGN policy validation</div>
+      </div>
+      <div class="program-card">
+        <div class="program-icon">📋</div>
+        <div class="program-name">sprint_report.hlf</div>
+        <div class="program-desc">Sprint summary generation with metrics and accomplishment tracking</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ RELEASES ═══════════════════════════ -->
+<section id="releases">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Releases</h2>
+      <p>An ever-evolving project — each sprint more sophisticated than the last</p>
+    </div>
+
+    <ul class="releases fade-in">
+      <li class="release-item">
+        <span class="release-version">v0.2.0</span>
+        <span class="release-date">March 8, 2026</span>
+        <div class="release-body">
+          <strong>Security Hardening</strong> — SECURITY.md, Dependabot, CodeQL scanning, local security scanner.<br>
+          <strong>Real Tools</strong> — Policy checker, repo health (0-100 scoring), sprint reporter, goal tracker, chart & diagram generators.<br>
+          <strong>Real Tests</strong> — 84 parametrized agent lifecycle tests. Policy checker, repo health, security scan tests.<br>
+          <strong>Self-Improvement Loop</strong> — Automated improvement engine with self-evaluation metrics.<br>
+          <strong>HLF Ecosystem Sync</strong> — Complete Tier 1-4 sync from Sovereign Agentic OS upstream.
+        </div>
+      </li>
+      <li class="release-item">
+        <span class="release-version">v0.1.0</span>
+        <span class="release-date">March 7, 2026</span>
+        <div class="release-body">
+          <strong>Foundation</strong> — Vision & Goals (VGII framework), CI/CD pipeline, project infrastructure.<br>
+          <strong>Agent Classes</strong> — Abstract base + 14 persona-based agent implementations.<br>
+          <strong>Decision Framework</strong> — RICE scoring matrix for autonomous prioritization.<br>
+          <strong>SVG Infographics</strong> — 5 custom SVG assets (banner, repo map, how-it-works, personas, review protocol).
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>
+      <strong>Jules Sandbox</strong> — Part of the
+      <a href="https://github.com/Grumpified-OGGVCT/Sovereign_Agentic_OS_with_HLF">Sovereign Agentic OS</a>
+      ecosystem.
+      <br>
+      Built with the Hieroglyphic Logic Framework · Gas-metered · Cryptographically auditable · Ever-evolving
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 20));
+
+  // IntersectionObserver for scroll-triggered fade-ins
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+  // Stagger grid children
+  document.querySelectorAll('.arch-grid, .agent-grid, .tool-grid, .programs-grid').forEach(g => {
+    const items = g.children;
+    for (let i = 0; i < items.length; i++) items[i].style.transitionDelay = `${i * 0.06}s`;
+  });
+</script>
+
+</body>
+</html>
