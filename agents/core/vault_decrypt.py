@@ -16,7 +16,7 @@ class VaultSettings(BaseSettings):
     vault_role_id: str = ""
     vault_secret_id: str = ""
 
-    model_config = {"env_file": ".env.example"}
+    model_config = {"env_file": ".env"}
 
 
 _settings = VaultSettings()

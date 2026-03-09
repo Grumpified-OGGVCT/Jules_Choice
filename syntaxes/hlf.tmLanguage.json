@@ -22,7 +22,7 @@
       "name": "entity.name.tag.hlf"
     },
     "terminator": {
-      "match": "\u03a9",
+      "match": "Ω",
       "name": "keyword.operator.terminator.hlf"
     },
     "string": {
