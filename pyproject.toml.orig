@@ -12,7 +12,7 @@ description = "An open-ended autonomous AI playground"
 authors = [
     { name = "Jules", email = "jules@example.com" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "lark>=1.1.0",
 ]
