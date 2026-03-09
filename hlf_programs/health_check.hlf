@@ -1,0 +1,34 @@
+[HLF-v3]
+[SET] repo_name = "Jules_Choice"
+[SET] min_health_score = 70
+[SET] check_categories = "structure,security,tests,docs,ci"
+
+[INTENT] "Perform comprehensive repository health assessment"
+[CONSTRAINT] "timeout" "120s"
+[CONSTRAINT] "gas_limit" "50"
+
+[THOUGHT] "Health check examines 5 categories: structure, security, tests, docs, CI"
+
+↦ τ(repo_health.check_structure) repo_name="${repo_name}"
+structure_score ← ${_RETURN_VALUE}
+
+↦ τ(security_scan.run_scan) target="${repo_name}" level="standard"
+security_score ← ${_RETURN_VALUE}
+
+↦ τ(repo_health.check_tests) repo_name="${repo_name}"
+test_score ← ${_RETURN_VALUE}
+
+↦ τ(repo_health.check_docs) repo_name="${repo_name}"
+docs_score ← ${_RETURN_VALUE}
+
+↦ τ(repo_health.check_ci) repo_name="${repo_name}"
+ci_score ← ${_RETURN_VALUE}
+
+[OBSERVATION] "All 5 health dimensions evaluated"
+
+⊎ ${overall_score} > ${min_health_score} ⇒ [RESULT] 0 "Health check PASSED" ⇌ [RESULT] 1 "Health check FAILED — score below threshold"
+
+[MEMORY] health_results = "Repo ${repo_name} scored ${overall_score}/100" confidence=0.9
+
+[RESULT] 0 "health_check_complete"
+Ω

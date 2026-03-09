@@ -1,0 +1,39 @@
+[HLF-v3]
+[SET] audit_scope = "full"
+[SET] severity_threshold = "medium"
+[SET] auto_fix = "false"
+
+[INTENT] "Execute multi-layer security audit across codebase"
+[CONSTRAINT] "gas_limit" "100"
+[CONSTRAINT] "timeout" "300s"
+[CONSTRAINT] "least_privilege" "true"
+
+[THOUGHT] "Security audit runs 4 layers: static analysis, dependency scan, policy compliance, secrets detection"
+
+[PLAN] "layer1_static" "layer2_deps" "layer3_policy" "layer4_secrets"
+
+↦ τ(security_scan.run_bandit) target="agents/" level="standard"
+static_results ← ${_RETURN_VALUE}
+
+↦ τ(security_scan.run_bandit) target="tools/" level="standard"
+tools_results ← ${_RETURN_VALUE}
+
+↦ τ(security_scan.check_dependencies) manifest="pyproject.toml"
+dep_results ← ${_RETURN_VALUE}
+
+↦ τ(policy_checker.check_all) rules="security_rules"
+policy_results ← ${_RETURN_VALUE}
+
+↦ τ(security_scan.detect_secrets) scope="${audit_scope}"
+secrets_results ← ${_RETURN_VALUE}
+
+[OBSERVATION] "4-layer security audit complete"
+
+⊎ ${critical_count} > 0 ⇒ [VOTE] false "Critical vulnerabilities found — blocking deployment" ⇌ [VOTE] true "Security audit passed"
+
+[ASSERT] ${critical_count} == 0 "CRITICAL: Security vulnerabilities detected"
+
+[MEMORY] audit_log = "Security audit: static=${static_results} deps=${dep_results} policy=${policy_results} secrets=${secrets_results}" confidence=0.9
+
+[RESULT] 0 "security_audit_complete"
+Ω

@@ -1,0 +1,43 @@
+[HLF-v4]
+[SET] framework = "VGII"
+[SET] decision_context = "autonomous_task_selection"
+[SET] confidence_threshold = 0.75
+
+[INTENT] "Execute VGII deterministic decision framework for autonomous task routing"
+[CONSTRAINT] "deterministic" "true"
+[CONSTRAINT] "audit_trail" "required"
+
+[THOUGHT] "VGII = Vision, Goals, Instincts, Intentions — 4-axis decision matrix"
+
+[FUNCTION] evaluate_vision
+  [RECALL] vision_state = "jules_vision" top_k=3
+  ↦ τ(goal_tracker.get_active_goals) scope="vision"
+  vision_alignment ← ${_RETURN_VALUE}
+  [ASSERT] ${vision_alignment} "Vision alignment check failed"
+
+[FUNCTION] evaluate_goals
+  ↦ τ(goal_tracker.get_active_goals) scope="sprint"
+  active_goals ← ${_RETURN_VALUE}
+  ↦ τ(goal_tracker.compute_priority) goals="${active_goals}"
+  goal_priority ← ${_RETURN_VALUE}
+
+[FUNCTION] evaluate_instincts
+  [SET] instinct_rules = "non_reductive,security_first,test_coverage,doc_parity"
+  ↦ τ(policy_checker.check_all) rules="${instinct_rules}"
+  instinct_compliance ← ${_RETURN_VALUE}
+  [ASSERT] ${instinct_compliance} "Instinct violation detected — blocking decision"
+
+[FUNCTION] evaluate_intentions
+  ↦ τ(sprint_reporter.get_pending_tasks) agent="jules"
+  pending ← ${_RETURN_VALUE}
+  ↦ τ(sprint_reporter.rank_by_impact) tasks="${pending}"
+  ranked_intentions ← ${_RETURN_VALUE}
+
+[OBSERVATION] "4-axis VGII evaluation complete"
+
+⊎ ${decision_confidence} > ${confidence_threshold} ⇒ [ACTION] "execute" "${selected_task}" ⇌ [DELEGATE] "strategist" "re_evaluate_with_more_context"
+
+[MEMORY] decision_log = "VGII selected task=${selected_task} confidence=${decision_confidence}" confidence=0.85
+
+[RESULT] 0 "decision_matrix_complete"
+Ω

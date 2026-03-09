@@ -1,0 +1,37 @@
+[HLF-v3]
+[SET] task_type = "unclassified"
+[SET] urgency = "normal"
+[SET] max_delegation_depth = 3
+
+[INTENT] "Route incoming task to the optimal persona agent based on task classification"
+[CONSTRAINT] "deterministic" "true"
+[CONSTRAINT] "max_hops" "${max_delegation_depth}"
+
+[THOUGHT] "Agent dispatch maps task types to persona specializations using the 14-persona matrix"
+
+↦ τ(policy_checker.classify_task) input="${task_type}"
+classification ← ${_RETURN_VALUE}
+
+[RECALL] agent_capabilities = "persona_registry" top_k=14
+
+⊎ ${classification} == "security" ⇒ [DELEGATE] "sentinel" "${task_type}"
+⊎ ${classification} == "documentation" ⇒ [DELEGATE] "scribe" "${task_type}"
+⊎ ${classification} == "analysis" ⇒ [DELEGATE] "oracle" "${task_type}"
+⊎ ${classification} == "strategy" ⇒ [DELEGATE] "strategist" "${task_type}"
+⊎ ${classification} == "creative" ⇒ [DELEGATE] "palette" "${task_type}"
+⊎ ${classification} == "quality" ⇒ [DELEGATE] "cove" "${task_type}"
+⊎ ${classification} == "integration" ⇒ [DELEGATE] "weaver" "${task_type}"
+⊎ ${classification} == "history" ⇒ [DELEGATE] "chronicler" "${task_type}"
+⊎ ${classification} == "communication" ⇒ [DELEGATE] "herald" "${task_type}"
+⊎ ${classification} == "exploration" ⇒ [DELEGATE] "scout" "${task_type}"
+⊎ ${classification} == "conflict" ⇒ [DELEGATE] "arbiter" "${task_type}"
+⊎ ${classification} == "innovation" ⇒ [DELEGATE] "catalyst" "${task_type}"
+⊎ ${classification} == "operations" ⇒ [DELEGATE] "steward" "${task_type}"
+⊎ ${classification} == "consolidation" ⇒ [DELEGATE] "consolidator" "${task_type}"
+
+[OBSERVATION] "Task dispatched to ${classification} specialist"
+
+[MEMORY] dispatch_log = "Task ${task_type} routed to ${classification} agent" confidence=0.85
+
+[RESULT] 0 "dispatch_complete"
+Ω
