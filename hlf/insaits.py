@@ -422,4 +422,3 @@ if __name__ == "__main__":
         source = Path(sys.argv[1]).read_text(encoding="utf-8")
         ast = hlfc_compile(source)
         print(decompile(ast))
-

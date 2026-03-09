@@ -27,6 +27,8 @@ title: Jules Sandbox — Sprint Preview
 
 <!-- APP_GALLERY_START -->
 
+[**View HLF Sandbox Capability Report**](hlf_sandbox_report.md)
+
 ### hello_world
 ![Screenshot](https://via.placeholder.com/300x200?text=No+Image)
 

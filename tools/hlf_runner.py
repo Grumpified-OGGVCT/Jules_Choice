@@ -67,7 +67,6 @@ def chaos_to_hlf(source: str, backend: str = "openrouter") -> str:
         system="You are an expert HLF compiler translating raw text into valid HLF syntax.",
         metadata={"provider": backend}
     )
-
     dispatcher = get_dispatcher()
     try:
         result = asyncio.run(dispatcher.generate(req))
@@ -94,7 +93,6 @@ def compile_hlf(source: str) -> HLFResult:
         # Handle chaos-to-HLF if missing standard header
         if not source.lstrip().startswith("[HLF-"):
             source = chaos_to_hlf(source)
-
         from hlf.hlfc import compile as hlfc_compile
         ast = hlfc_compile(source)
         node_count = len(ast.get("program", []))
@@ -170,7 +168,6 @@ def run_hlf(source: str, tools: dict[str, Any] | None = None) -> HLFResult:
         # Handle chaos-to-HLF if missing standard header
         if not source.lstrip().startswith("[HLF-"):
             source = chaos_to_hlf(source)
-
         from hlf.hlfc import compile as hlfc_compile
         from hlf.hlfrun import HLFInterpreter
 
@@ -219,7 +216,6 @@ def bytecode_compile(source: str) -> HLFResult:
         # Handle chaos-to-HLF if missing standard header
         if not source.lstrip().startswith("[HLF-"):
             source = chaos_to_hlf(source)
-
         from hlf.bytecode import HLFBytecodeCompiler
 
         compiler = HLFBytecodeCompiler()

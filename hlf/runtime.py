@@ -115,6 +115,10 @@ class HostFunctionRegistry:
         data = json.loads(path.read_text(encoding="utf-8"))
         registry = cls(version=data.get("version", "1.0.0"))
 
+        registry.register_dispatcher("dapr_file_read", _dapr_file_read_handler)
+        registry.register_dispatcher("dapr_file_write", _dapr_file_write_handler)
+
+
         for entry in data.get("functions", []):
             hf = HostFunction(
                 name=entry["name"],
@@ -224,6 +228,35 @@ class HostFunctionResult:
     gas_cost: int
     sensitive: bool
     backend: str
+
+
+def _acfs_path(raw: str) -> Path:
+    """Resolve *raw* against BASE_DIR and verify it stays within the ACFS tree."""
+    _PROJECT_ROOT_LOCAL = Path(__file__).resolve().parent.parent
+    base_str = _os.environ.get("BASE_DIR", str(_PROJECT_ROOT_LOCAL))
+    base = Path(base_str).resolve()
+    try:
+        target = (base / raw.lstrip("/")).resolve(strict=False)
+    except PermissionError:
+        target = (base / raw.lstrip("/")).absolute()
+    if not target.is_relative_to(base):
+        raise PermissionError(f"ACFS confinement violation: '{raw}' resolves outside BASE_DIR")
+    return target
+
+def _dapr_file_read_handler(func_name: str, args: dict[str, Any]) -> str:
+    """READ <path> — secure direct fs fallback."""
+    path = str(args.get("path", ""))
+    target = _acfs_path(path)
+    return target.read_text(encoding="utf-8")
+
+def _dapr_file_write_handler(func_name: str, args: dict[str, Any]) -> bool:
+    """WRITE <path> <data> — secure direct fs fallback."""
+    path = str(args.get("path", ""))
+    data = str(args.get("data", ""))
+    target = _acfs_path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(data, encoding="utf-8")
+    return True
 
 
 def _builtin_dispatch(func_name: str, args: dict[str, Any]) -> Any:
