@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "functions": [
     { "name": "READ", "args": [{"name":"path","type":"path"}], "returns": "string", "tier": ["hearth","forge","sovereign"], "gas": 1, "backend": "dapr_file_read", "sensitive": false },
     { "name": "WRITE", "args": [{"name":"path","type":"path"},{"name":"data","type":"string"}], "returns": "bool", "tier": ["hearth","forge","sovereign"], "gas": 2, "backend": "dapr_file_write", "sensitive": false },
@@ -8,6 +8,11 @@
     { "name": "HTTP_GET", "args": [{"name":"url","type":"string"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 3, "backend": "dapr_http_proxy", "sensitive": false },
     { "name": "WEB_SEARCH", "args": [{"name":"query","type":"string"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 5, "backend": "dapr_http_proxy", "sensitive": true },
     { "name": "OPENCLAW_SUMMARIZE", "args": [{"name":"path","type":"path"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 7, "backend": "dapr_container_spawn", "sensitive": true, "binary_path": "/opt/openclaw/bin/openclaw_summarize", "binary_sha256": "" },
-    { "name": "FORGE_TOOL", "args": [{"name":"task","type":"string"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 10, "backend": "tool_forge", "sensitive": false }
+    { "name": "FORGE_TOOL", "args": [{"name":"task","type":"string"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 10, "backend": "tool_forge", "sensitive": false },
+    { "name": "CLASSIFY_TASK", "args": [{"name":"description","type":"string"}], "returns": "string", "tier": ["hearth","forge","sovereign"], "gas": 2, "backend": "agent_dispatch", "sensitive": false },
+    { "name": "RUN_AGENT", "args": [{"name":"agent_name","type":"string"},{"name":"task","type":"string"}], "returns": "string", "tier": ["forge","sovereign"], "gas": 5, "backend": "agent_dispatch", "sensitive": false },
+    { "name": "SECURITY_SCAN", "args": [{"name":"path","type":"path"}], "returns": "string", "tier": ["hearth","forge","sovereign"], "gas": 3, "backend": "agent_dispatch", "sensitive": false },
+    { "name": "HEALTH_CHECK", "args": [{"name":"path","type":"path"}], "returns": "string", "tier": ["hearth","forge","sovereign"], "gas": 2, "backend": "agent_dispatch", "sensitive": false },
+    { "name": "POLICY_CHECK", "args": [{"name":"path","type":"path"}], "returns": "string", "tier": ["hearth","forge","sovereign"], "gas": 2, "backend": "agent_dispatch", "sensitive": false }
   ]
 }
