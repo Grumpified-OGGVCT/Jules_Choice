@@ -697,13 +697,23 @@ class HLFInterpreter:
             "operator": "↦ τ",
         })
 
+        # Parse arguments into keyword dictionary for dispatch
+        call_args = {}
+        for arg in args:
+            if isinstance(arg, dict):
+                for k, v in arg.items():
+                    if k != "ref":
+                        call_args[k] = self._expand(v)
+            else:
+                call_args[f"arg_{len(call_args)}"] = self._expand(arg)
+
         # Try to dispatch via runtime.py HostFunctionRegistry first
         try:
             from hlf.runtime import HostFunctionRegistry
             registry = HostFunctionRegistry.from_json()
             result_obj = registry.dispatch(
                 tool_name,
-                {"args": args},
+                call_args,
                 tier=self.tier,
             )
             result = result_obj.value if hasattr(result_obj, 'value') else result_obj

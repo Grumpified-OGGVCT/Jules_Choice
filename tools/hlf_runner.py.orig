@@ -216,10 +216,6 @@ def bytecode_compile(source: str) -> HLFResult:
         HLFResult with bytecode bytes in output.
     """
     try:
-        # Handle chaos-to-HLF if missing standard header
-        if not source.lstrip().startswith("[HLF-"):
-            source = chaos_to_hlf(source)
-
         from hlf.bytecode import HLFBytecodeCompiler
 
         compiler = HLFBytecodeCompiler()

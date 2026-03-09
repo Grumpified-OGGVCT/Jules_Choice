@@ -128,7 +128,7 @@ _GRAMMAR = r"""
     glyph_stmt: GLYPH_PREFIX tag_stmt
               | GLYPH_PREFIX call_stmt
               | GLYPH_PREFIX glyph_stmt
-    GLYPH_PREFIX: /[⌘Ж∇⩕⨝Δ~§]|~frust/ | "~frust"
+    GLYPH_PREFIX: /[⌘Ж∇⩕⨝Δ~§]|~frust/
 
     arglist: arg*
     arg: kv_pair | ref_arg | literal

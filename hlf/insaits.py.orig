@@ -394,8 +394,9 @@ def fluent_decompile(bc_data: bytes, backend: str = "openrouter") -> str:
 
     dispatcher = get_dispatcher()
     try:
-        # Attempt synchronous resolution safely
-        result = asyncio.run(dispatcher.generate(req))
+        # Attempt synchronous resolution (assumes called within async loop or standalone)
+        loop = asyncio.get_event_loop()
+        result = loop.run_until_complete(dispatcher.generate(req))
         return result.text
     except Exception as e:
         return f"AI Translation Failed: {e}\n\nFallback Raw Ops:\n{ops}"
@@ -422,4 +423,3 @@ if __name__ == "__main__":
         source = Path(sys.argv[1]).read_text(encoding="utf-8")
         ast = hlfc_compile(source)
         print(decompile(ast))
-

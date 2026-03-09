@@ -1,0 +1,11 @@
+--- pyproject.toml
++++ pyproject.toml
+@@ -9,7 +9,7 @@
+ authors = [
+     { name = "Jules", email = "jules@example.com" }
+ ]
+-requires-python = ">=3.11"
++requires-python = ">=3.12"
+ dependencies = [
+     "lark>=1.1.0",
+ ]
